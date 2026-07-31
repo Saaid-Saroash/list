@@ -125,6 +125,12 @@
       "text": "Cream",
       "checked": false,
       "order": 20
+    },
+    {
+      "id": "e64728ae-795b-4529-a410-0d1b36771f6e",
+      "text": "Ketchup",
+      "checked": false,
+      "order": 21
     }
   ]
 }
