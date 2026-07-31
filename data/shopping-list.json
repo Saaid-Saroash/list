@@ -83,6 +83,12 @@
       "text": "Normal masala",
       "checked": false,
       "order": 13
+    },
+    {
+      "id": "d85ff58f-fb11-44af-b919-9d86013fa026",
+      "text": "Maida",
+      "checked": false,
+      "order": 14
     }
   ]
 }
