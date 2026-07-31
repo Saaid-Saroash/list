@@ -1,16 +1,10 @@
 {
   "items": [
     {
-      "id": "568f1ead-7149-4559-9a0e-c79065217990",
-      "text": "abd",
-      "checked": false,
-      "order": 0
-    },
-    {
       "id": "bd73e39c-dcb4-4cba-9916-92b689fe53b1",
       "text": "Aloo",
       "checked": false,
-      "order": 1
+      "order": 0
     }
   ]
 }
