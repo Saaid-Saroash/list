@@ -233,6 +233,12 @@
       "text": "Biscuits",
       "checked": false,
       "order": 38
+    },
+    {
+      "id": "7ab877b3-63ee-4c69-ac8b-f36d493c79a9",
+      "text": "Chips",
+      "checked": false,
+      "order": 39
     }
   ]
 }
