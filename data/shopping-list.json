@@ -77,6 +77,12 @@
       "text": "Nihari Masala",
       "checked": false,
       "order": 12
+    },
+    {
+      "id": "936e295c-7889-49db-9107-51f14fee0c7c",
+      "text": "Normal masala",
+      "checked": false,
+      "order": 13
     }
   ]
 }
