@@ -257,6 +257,12 @@
       "text": "Pineapple drink",
       "checked": false,
       "order": 42
+    },
+    {
+      "id": "e1eb1488-6da5-452e-89bb-8791daeb10ee",
+      "text": "Nuggets",
+      "checked": false,
+      "order": 43
     }
   ]
 }
