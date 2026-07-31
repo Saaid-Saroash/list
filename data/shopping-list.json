@@ -251,6 +251,12 @@
       "text": "Toffee",
       "checked": false,
       "order": 41
+    },
+    {
+      "id": "a74d3b47-fac4-4d7c-b2eb-940c6041528e",
+      "text": "Pineapple drink",
+      "checked": false,
+      "order": 42
     }
   ]
 }
