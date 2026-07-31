@@ -119,6 +119,12 @@
       "text": "Foam",
       "checked": false,
       "order": 19
+    },
+    {
+      "id": "0e6bb8d1-1616-4ed7-b23b-46cf9de491a0",
+      "text": "Cream",
+      "checked": false,
+      "order": 20
     }
   ]
 }
