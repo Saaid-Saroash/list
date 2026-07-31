@@ -215,6 +215,12 @@
       "text": "Toothpaste",
       "checked": false,
       "order": 35
+    },
+    {
+      "id": "9aeed376-6e15-4a83-8983-aca00a53d65f",
+      "text": "Cotton buds",
+      "checked": false,
+      "order": 36
     }
   ]
 }
