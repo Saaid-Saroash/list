@@ -167,6 +167,12 @@
       "text": "Basin",
       "checked": false,
       "order": 27
+    },
+    {
+      "id": "c0a6f405-ed94-4dc5-a2f2-a695f80be34b",
+      "text": "White chanay",
+      "checked": false,
+      "order": 28
     }
   ]
 }
