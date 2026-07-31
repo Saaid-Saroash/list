@@ -59,6 +59,12 @@
       "text": "Soap",
       "checked": false,
       "order": 9
+    },
+    {
+      "id": "3f005abd-14f4-47f9-aedb-2491e53083e3",
+      "text": "Shampoo",
+      "checked": false,
+      "order": 10
     }
   ]
 }
