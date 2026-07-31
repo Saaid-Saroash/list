@@ -65,6 +65,12 @@
       "text": "Shampoo",
       "checked": false,
       "order": 10
+    },
+    {
+      "id": "5040f55f-1ae8-4ffb-ae09-45bd527f6aa3",
+      "text": "Biriani Masala",
+      "checked": false,
+      "order": 11
     }
   ]
 }
