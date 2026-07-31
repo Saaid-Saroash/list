@@ -5,6 +5,12 @@
       "text": "Oil",
       "checked": false,
       "order": 0
+    },
+    {
+      "id": "766bc361-b6e8-41e2-94bc-091d2d2e8d6d",
+      "text": "Atta",
+      "checked": false,
+      "order": 1
     }
   ]
 }
