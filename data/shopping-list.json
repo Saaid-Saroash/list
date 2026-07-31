@@ -41,6 +41,12 @@
       "text": "Jam",
       "checked": false,
       "order": 6
+    },
+    {
+      "id": "c4d352d6-d638-4fa2-8ff8-314b411e5bb7",
+      "text": "Black pepper",
+      "checked": false,
+      "order": 7
     }
   ]
 }
