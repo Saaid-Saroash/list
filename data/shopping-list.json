@@ -23,6 +23,12 @@
       "text": "Surf",
       "checked": false,
       "order": 3
+    },
+    {
+      "id": "d162147f-993b-475b-87de-a34278be0aa8",
+      "text": "Harpic",
+      "checked": false,
+      "order": 4
     }
   ]
 }
