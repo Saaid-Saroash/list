@@ -239,6 +239,12 @@
       "text": "Chips",
       "checked": false,
       "order": 39
+    },
+    {
+      "id": "f2816aa8-09fc-4313-9a6f-7d4c8b5bb665",
+      "text": "Chocolates",
+      "checked": false,
+      "order": 40
     }
   ]
 }
