@@ -245,6 +245,12 @@
       "text": "Chocolates",
       "checked": false,
       "order": 40
+    },
+    {
+      "id": "0c15fcf3-bf72-4142-bc67-c06cb73eff6a",
+      "text": "Toffee",
+      "checked": false,
+      "order": 41
     }
   ]
 }
