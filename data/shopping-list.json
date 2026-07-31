@@ -35,6 +35,12 @@
       "text": "Rice",
       "checked": false,
       "order": 5
+    },
+    {
+      "id": "13865571-a02a-40ad-98f1-3bcba5be5ea1",
+      "text": "Jam",
+      "checked": false,
+      "order": 6
     }
   ]
 }
