@@ -29,6 +29,12 @@
       "text": "Harpic",
       "checked": false,
       "order": 4
+    },
+    {
+      "id": "59af321c-8095-40ae-9999-e18b43f79c47",
+      "text": "Rice",
+      "checked": false,
+      "order": 5
     }
   ]
 }
