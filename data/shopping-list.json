@@ -101,6 +101,12 @@
       "text": "Laal mirch",
       "checked": false,
       "order": 16
+    },
+    {
+      "id": "1fe42d26-8a4f-4ab7-af0d-479fc80bb2bd",
+      "text": "Salt",
+      "checked": false,
+      "order": 17
     }
   ]
 }
