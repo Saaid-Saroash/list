@@ -173,6 +173,12 @@
       "text": "White chanay",
       "checked": false,
       "order": 28
+    },
+    {
+      "id": "2f4fc278-1816-465e-b9ee-dd04f35271d8",
+      "text": "Chana daal",
+      "checked": false,
+      "order": 29
     }
   ]
 }
