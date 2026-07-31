@@ -209,6 +209,12 @@
       "text": "Toothbrush",
       "checked": false,
       "order": 34
+    },
+    {
+      "id": "4bdf13a0-9c98-44ea-8342-b88d997f4744",
+      "text": "Toothpaste",
+      "checked": false,
+      "order": 35
     }
   ]
 }
