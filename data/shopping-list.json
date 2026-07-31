@@ -185,6 +185,12 @@
       "text": "Sauce new bottles",
       "checked": false,
       "order": 30
+    },
+    {
+      "id": "94e3ffc6-4415-4112-b8ce-aa2526dc2576",
+      "text": "Blue band",
+      "checked": false,
+      "order": 31
     }
   ]
 }
