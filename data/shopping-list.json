@@ -71,6 +71,12 @@
       "text": "Biriani Masala",
       "checked": false,
       "order": 11
+    },
+    {
+      "id": "f33f7e16-c299-4589-b90b-3cab468c3084",
+      "text": "Nihari Masala",
+      "checked": false,
+      "order": 12
     }
   ]
 }
