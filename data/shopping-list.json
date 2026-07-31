@@ -107,6 +107,12 @@
       "text": "Salt",
       "checked": false,
       "order": 17
+    },
+    {
+      "id": "072c590f-1cc5-4759-95c8-dc0f941fbd4b",
+      "text": "Lemon max",
+      "checked": false,
+      "order": 18
     }
   ]
 }
