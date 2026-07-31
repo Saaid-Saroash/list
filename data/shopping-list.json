@@ -263,6 +263,12 @@
       "text": "Nuggets",
       "checked": false,
       "order": 43
+    },
+    {
+      "id": "204ca0c5-ef54-4aa7-a66f-7b2315bf2873",
+      "text": "Burger patty",
+      "checked": false,
+      "order": 44
     }
   ]
 }
