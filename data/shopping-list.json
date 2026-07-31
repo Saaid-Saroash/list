@@ -149,6 +149,12 @@
       "text": "Soya sauce",
       "checked": false,
       "order": 24
+    },
+    {
+      "id": "21c8d41c-107a-4084-a504-6d3d34272ba2",
+      "text": "Vinegar",
+      "checked": false,
+      "order": 25
     }
   ]
 }
