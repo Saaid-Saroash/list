@@ -143,6 +143,12 @@
       "text": "Chili garlic sauce",
       "checked": false,
       "order": 23
+    },
+    {
+      "id": "13046754-3130-42c0-b272-f3ade5a9d609",
+      "text": "Soya sauce",
+      "checked": false,
+      "order": 24
     }
   ]
 }
