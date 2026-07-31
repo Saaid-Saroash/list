@@ -131,6 +131,12 @@
       "text": "Ketchup",
       "checked": false,
       "order": 21
+    },
+    {
+      "id": "f4a348ef-d440-471e-afbd-f8357f64057f",
+      "text": "Mayonnaise",
+      "checked": false,
+      "order": 22
     }
   ]
 }
