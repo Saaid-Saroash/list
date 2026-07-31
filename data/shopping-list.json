@@ -221,6 +221,12 @@
       "text": "Cotton buds",
       "checked": false,
       "order": 36
+    },
+    {
+      "id": "f6e0809a-765d-4a0a-a30d-771a9991f09e",
+      "text": "Khajoor",
+      "checked": false,
+      "order": 37
     }
   ]
 }
