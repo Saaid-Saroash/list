@@ -53,6 +53,12 @@
       "text": "Habit Dhania",
       "checked": false,
       "order": 8
+    },
+    {
+      "id": "0bc69f2b-65f6-4a6f-892a-2631fa5d8cdd",
+      "text": "Soap",
+      "checked": false,
+      "order": 9
     }
   ]
 }
