@@ -137,6 +137,12 @@
       "text": "Mayonnaise",
       "checked": false,
       "order": 22
+    },
+    {
+      "id": "8cfbfdf6-d363-4749-b50a-d2334277f3b9",
+      "text": "Chili garlic sauce",
+      "checked": false,
+      "order": 23
     }
   ]
 }
