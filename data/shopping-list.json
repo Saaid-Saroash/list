@@ -247,15 +247,15 @@
       "order": 40
     },
     {
-      "id": "204ca0c5-ef54-4aa7-a66f-7b2315bf2873",
-      "text": "Burger patty",
+      "id": "29e70057-5790-458e-b23d-a539c0f440b9",
+      "text": "Foam",
       "checked": false,
       "order": 41
     },
     {
-      "id": "29e70057-5790-458e-b23d-a539c0f440b9",
-      "text": "Foam",
-      "checked": false,
+      "id": "204ca0c5-ef54-4aa7-a66f-7b2315bf2873",
+      "text": "Burger patty",
+      "checked": true,
       "order": 42
     },
     {
