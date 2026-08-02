@@ -270,8 +270,8 @@
       "id": "0c15fcf3-bf72-4142-bc67-c06cb73eff6a",
       "text": "Toffee",
       "checked": false,
-      "order": 43,
-      "groupId": null
+      "order": 0,
+      "groupId": "f5f83a29-29a5-40df-af51-7a34184b90f3"
     },
     {
       "id": "a74d3b47-fac4-4d7c-b2eb-940c6041528e",
@@ -305,7 +305,7 @@
       "id": "766bc361-b6e8-41e2-94bc-091d2d2e8d6d",
       "text": "Atta",
       "checked": false,
-      "order": 44,
+      "order": 43,
       "groupId": null
     },
     {
