@@ -6,59 +6,67 @@
   <title>Shopping List</title>
   <style>
     :root {
-      --bg: #0b0f14;
-      --panel: #111722;
-      --panel-2: #0f151f;
+      --bg: #081018;
+      --glass: rgba(17, 23, 34, 0.56);
       --text: #e8edf5;
-      --muted: #94a3b8;
-      --line: #223047;
+      --muted: #9aa8be;
+      --line: rgba(255, 255, 255, 0.10);
       --accent: #63e6ff;
-      --accent-2: #8b5cf6;
-      --danger: #ff6577;
       --success: #35d07f;
-      --shadow: 0 10px 26px rgba(0, 0, 0, .22);
-      --radius: 18px;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 16px;
       --font-scale: 1;
       --tile-scale: 1;
     }
 
-    [data-font="small"] { --font-scale: .94; }
+    [data-font="small"] { --font-scale: 0.94; }
     [data-font="medium"] { --font-scale: 1; }
     [data-font="large"] { --font-scale: 1.12; }
     [data-font="xl"] { --font-scale: 1.24; }
 
     * { box-sizing: border-box; }
     html, body { height: 100%; }
+    html { scroll-behavior: auto; }
 
     body {
       margin: 0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: linear-gradient(180deg, #081018 0%, #0b0f14 100%);
-      color: var(--text);
-      overflow-x: hidden;
       font-size: calc(15px * var(--font-scale));
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(99, 230, 255, 0.16), transparent 24%),
+        radial-gradient(circle at 80% 10%, rgba(139, 92, 246, 0.15), transparent 26%),
+        linear-gradient(180deg, #071018 0%, #081018 100%);
+      overflow-x: hidden;
+      overflow-anchor: none;
     }
 
     .app {
-      max-width: 980px;
+      max-width: 1060px;
       margin: 0 auto;
-      padding: 20px 14px 34px;
+      padding: 18px 14px 34px;
     }
 
-    .shell {
-      background: rgba(17, 23, 34, .92);
-      border: 1px solid rgba(255, 255, 255, .06);
-      border-radius: 24px;
+    .panel {
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+      background: linear-gradient(180deg, rgba(20, 28, 42, 0.72), rgba(16, 22, 33, 0.58));
+      border: 1px solid rgba(255, 255, 255, 0.10);
       box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
       padding: 16px;
-      backdrop-filter: blur(12px);
     }
 
-    .topbar {
+    .panel-top {
       display: flex;
-      gap: 12px;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
       flex-wrap: wrap;
       margin-bottom: 14px;
     }
@@ -66,45 +74,60 @@
     h1 {
       margin: 0;
       font-size: clamp(24px, 3.8vw, 34px);
-      letter-spacing: -.04em;
       line-height: 1.05;
+      letter-spacing: -0.04em;
     }
 
     .controls {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto auto auto auto;
+      grid-template-columns: minmax(0, 1.35fr) auto auto auto;
       gap: 10px;
-      margin-top: 12px;
       align-items: stretch;
     }
 
-    .input, .select, .range-wrap {
-      width: 100%;
-      border: 1px solid var(--line);
-      background: rgba(8, 12, 18, .95);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 13px 14px;
-      outline: none;
-      font-size: 1em;
-      transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .02);
+    .settings-row {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      gap: 10px;
+      align-items: stretch;
+      margin-top: 10px;
     }
 
-    .input:focus, .select:focus {
-      border-color: rgba(99, 230, 255, .6);
-      box-shadow: 0 0 0 3px rgba(99, 230, 255, .10);
+    .input,
+    .select,
+    .toggle-wrap,
+    .range-wrap {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(8, 12, 18, 0.72);
+      color: var(--text);
+      border-radius: var(--radius-md);
+      padding: 13px 14px;
+      outline: none;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    .input,
+    .select {
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+      font-size: 1em;
+    }
+
+    .input:focus,
+    .select:focus {
+      border-color: rgba(99, 230, 255, 0.58);
+      box-shadow: 0 0 0 3px rgba(99, 230, 255, 0.10);
     }
 
     .btn {
       border: none;
-      border-radius: 14px;
+      border-radius: var(--radius-md);
       padding: 13px 15px;
       font-weight: 700;
-      font-size: .95em;
+      font-size: 0.95em;
       color: #061018;
       cursor: pointer;
-      transition: transform .15s ease, opacity .15s ease, filter .15s ease;
+      transition: transform 0.15s ease, filter 0.15s ease;
       white-space: nowrap;
       user-select: none;
     }
@@ -115,20 +138,71 @@
     .btn-add { background: linear-gradient(135deg, var(--accent), #9ae6ff); }
     .btn-clear { background: linear-gradient(135deg, #ffd166, #ff8f70); }
 
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+      min-width: 0;
+      cursor: pointer;
+      user-select: none;
+      padding: 12px 14px;
+    }
+
+    .toggle-wrap span {
+      font-size: 0.96em;
+      line-height: 1.2;
+    }
+
+    .switch {
+      position: relative;
+      width: 46px;
+      height: 26px;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: 0.18s ease;
+    }
+
+    .switch::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #dfe7f2;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+      transition: 0.18s ease;
+    }
+
+    .toggle-wrap input { display: none; }
+    .toggle-wrap input:checked + .switch {
+      background: rgba(53, 208, 127, 0.18);
+      border-color: rgba(53, 208, 127, 0.28);
+    }
+    .toggle-wrap input:checked + .switch::after {
+      left: 23px;
+      background: #7ef0a8;
+    }
+
     .range-wrap {
       display: grid;
       gap: 8px;
       padding-top: 10px;
       padding-bottom: 10px;
+      min-width: 0;
     }
 
     .range-label {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
       align-items: center;
+      gap: 10px;
       color: var(--muted);
-      font-size: .88em;
+      font-size: 0.88em;
       line-height: 1;
       user-select: none;
     }
@@ -138,47 +212,70 @@
       accent-color: var(--accent);
     }
 
+    .content {
+      margin-top: 14px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0 8px;
+      color: rgba(232, 237, 245, 0.80);
+      font-size: 0.95em;
+      letter-spacing: 0.02em;
+      user-select: none;
+    }
+
+    .section-title::before,
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
     .list {
-      margin: 14px 0 0;
+      margin: 0;
       padding: 0;
       list-style: none;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      min-height: 72px;
+      min-height: 48px;
       contain: content;
     }
 
     .item {
-      position: relative;
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
       gap: 10px;
       align-items: center;
       padding: calc(12px * var(--tile-scale)) 12px;
       min-height: calc(56px * var(--tile-scale));
-      background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .02));
-      border: 1px solid rgba(255, 255, 255, .07);
-      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
       overflow: hidden;
       touch-action: pan-y;
       will-change: transform, opacity;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
     }
 
     .item::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, rgba(99, 230, 255, .06), transparent 24%, transparent 76%, rgba(139, 92, 246, .06));
+      background: linear-gradient(90deg, rgba(99, 230, 255, 0.08), transparent 30%, transparent 70%, rgba(139, 92, 246, 0.08));
       opacity: 0;
       pointer-events: none;
-      transition: opacity .15s ease;
+      transition: opacity 0.15s ease;
     }
 
     .item:hover::before { opacity: 1; }
 
     .item.done .text {
-      color: rgba(232, 237, 245, .58);
+      color: rgba(232, 237, 245, 0.58);
       text-decoration: line-through;
       text-decoration-thickness: 2px;
     }
@@ -196,13 +293,13 @@
       width: 22px;
       height: 22px;
       border-radius: 7px;
-      border: 2px solid #4b5d79;
-      background: rgba(7, 10, 15, .85);
+      border: 2px solid rgba(118, 137, 167, 0.92);
+      background: rgba(7, 10, 15, 0.84);
       display: grid;
       place-items: center;
       cursor: pointer;
       margin: 0;
-      transition: .15s ease;
+      transition: 0.15s ease;
     }
 
     .check::after {
@@ -215,9 +312,9 @@
     }
 
     .check:checked {
-      border-color: rgba(53, 208, 127, .95);
-      background: rgba(53, 208, 127, .16);
-      box-shadow: 0 0 0 4px rgba(53, 208, 127, .08);
+      border-color: rgba(53, 208, 127, 0.95);
+      background: rgba(53, 208, 127, 0.16);
+      box-shadow: 0 0 0 4px rgba(53, 208, 127, 0.08);
     }
 
     .check:checked::after {
@@ -239,32 +336,21 @@
       flex: 0 0 auto;
     }
 
-    .drag-handle,
-    .delete-btn {
-      width: 34px;
-      height: 34px;
+    .drag-handle {
+      width: 36px;
+      height: 36px;
       display: grid;
       place-items: center;
-      border-radius: 11px;
+      border-radius: 12px;
       user-select: none;
-      border: 1px solid rgba(255, 255, 255, .07);
-      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.05);
       color: #d4dce8;
       flex: 0 0 auto;
-    }
-
-    .drag-handle {
       cursor: grab;
       font-size: 18px;
       line-height: 1;
       touch-action: none;
-    }
-
-    .delete-btn {
-      cursor: pointer;
-      border-color: rgba(255, 101, 119, .20);
-      color: #ff9aa4;
-      font-size: 16px;
     }
 
     .drag-handle:active { cursor: grabbing; }
@@ -275,90 +361,125 @@
 
     .item.deleting {
       opacity: 0;
-      transform: scale(.97);
-      transition: opacity .15s ease, transform .15s ease;
+      transform: scale(0.98);
+      transition: opacity 0.15s ease, transform 0.15s ease;
     }
 
-    .drop-line {
-      height: 2px;
-      margin: 0 10px;
+    .toast-stack {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 60;
+      pointer-events: none;
+      max-width: min(92vw, 360px);
+    }
+
+    .toast {
+      pointer-events: auto;
+      background: linear-gradient(180deg, rgba(20, 28, 42, 0.90), rgba(12, 18, 28, 0.88));
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      color: var(--text);
       border-radius: 999px;
-      background: rgba(99, 230, 255, .6);
-      box-shadow: 0 0 0 3px rgba(99, 230, 255, .10);
+      padding: 11px 14px;
+      box-shadow: var(--shadow);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      transform: translateX(0);
+      opacity: 1;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+      touch-action: pan-y;
+      user-select: none;
     }
 
-    @media (max-width: 900px) {
-      .controls {
-        grid-template-columns: 1fr 1fr;
-      }
+    .toast.swiping { transition: none; }
+    .toast.fade-out { opacity: 0; transform: translateX(-18px); }
+
+    .toast-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(99, 230, 255, 0.10);
+    }
+
+    @media (max-width: 980px) {
+      .controls { grid-template-columns: 1fr 1fr; }
       .input { grid-column: 1 / -1; }
       .btn-add { grid-column: 1 / span 1; }
       .btn-clear { grid-column: 2 / span 1; }
-      .select { grid-column: 1 / span 1; }
+      .toggle-wrap { grid-column: 1 / -1; }
+      .font-select { grid-column: 1 / span 1; }
       .range-wrap { grid-column: 2 / span 1; }
     }
 
-    @media (max-width: 540px) {
-      .controls {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 560px) {
+      .panel { padding: 14px; }
+      .controls { grid-template-columns: 1fr; }
       .input,
       .btn-add,
       .btn-clear,
-      .select,
-      .range-wrap {
-        grid-column: 1 / -1;
-      }
-      .item {
-        grid-template-columns: auto minmax(0, 1fr) auto;
-        padding-right: 10px;
-      }
+      .toggle-wrap,
+      .range-wrap,
+      .font-select { grid-column: 1 / -1; }
+      .item { grid-template-columns: auto minmax(0, 1fr) auto; }
       .actions { gap: 6px; }
-      .drag-handle, .delete-btn { width: 32px; height: 32px; }
+      .drag-handle { width: 34px; height: 34px; }
+      .toast-stack { left: 12px; bottom: 12px; right: 12px; max-width: calc(100vw - 24px); }
     }
   </style>
 </head>
 <body data-font="medium">
   <div class="app">
-    <div class="shell">
-      <div class="topbar">
-        <h1>Shopping List</h1>
+    <div class="panel">
+      <div class="panel-top">
+        <div>
+          <h1>Shopping List</h1>
+        </div>
       </div>
 
       <div class="controls">
         <input id="itemInput" class="input" type="text" placeholder="Add item" maxlength="120" autocomplete="off" />
-        <button id="addBtn" class="btn btn-add">Add Item</button>
-        <button id="clearBtn" class="btn btn-clear">Clear Checks</button>
-
-        <select id="fontSize" class="select" aria-label="Font size">
+        <button id="addBtn" class="btn btn-add" type="button">Add Item</button>
+        <button id="clearBtn" class="btn btn-clear" type="button">Clear Checks</button>
+        <label class="toggle-wrap" title="Move done items to bottom">
+          <span>Group Done</span>
+          <input id="groupDone" type="checkbox" />
+          <span class="switch"></span>
+        </label>
+        <select id="fontSelect" class="select font-select" aria-label="Font size">
           <option value="small">Font: Small</option>
-          <option value="medium" selected>Font: Medium</option>
+          <option value="medium">Font: Medium</option>
           <option value="large">Font: Large</option>
           <option value="xl">Font: Extra Large</option>
         </select>
-
         <div class="range-wrap">
-          <div class="range-label"><span>Tile Size</span><span id="tileLabel">100%</span></div>
-          <input id="tileSize" class="range" type="range" min="85" max="140" value="100" />
+          <div class="range-label"><span>Tile Height</span><span id="sizeLabel">100%</span></div>
+          <input id="sizeSlider" class="range" type="range" min="85" max="140" value="100" />
         </div>
       </div>
-
-      <ul id="list" class="list"></ul>
     </div>
+
+    <div class="content" id="contentRoot"></div>
   </div>
 
-  <div id="toast" class="toast"></div>
+  <div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="false"></div>
 
   <script>
-    const STORAGE_KEY = "shopping_list_dark_v3";
-
-    // Change this if the front-end is hosted on GitHub Pages.
-    // GitHub Pages cannot run /api routes, so the API must live on Vercel.
+    const STORAGE_KEY = "shopping_list_dark_v5";
     const API_BASE_URL = (() => {
       const saved = localStorage.getItem("shopping_api_base");
       if (saved) return saved.replace(/\/$/, "");
       if (location.hostname.endsWith(".vercel.app")) return location.origin;
-      return "https://YOUR-PROJECT-NAME.vercel.app";
+      return "https://YOUR-VERCEL-DOMAIN.vercel.app";
     })();
 
     const API_LIST_URL = `${API_BASE_URL}/api/list`;
@@ -371,47 +492,102 @@
       swipeItem: null,
       fontSize: localStorage.getItem("shopping_font_size") || "medium",
       tileSize: Number(localStorage.getItem("shopping_tile_size") || 100),
+      groupDone: localStorage.getItem("shopping_group_done") === "true",
     };
 
-    const listEl = document.getElementById("list");
+    const contentRoot = document.getElementById("contentRoot");
     const inputEl = document.getElementById("itemInput");
     const addBtn = document.getElementById("addBtn");
     const clearBtn = document.getElementById("clearBtn");
-    const fontSizeEl = document.getElementById("fontSize");
-    const tileSizeEl = document.getElementById("tileSize");
-    const tileLabelEl = document.getElementById("tileLabel");
-    const toast = document.getElementById("toast");
+    const groupDoneEl = document.getElementById("groupDone");
+    const fontSelectEl = document.getElementById("fontSelect");
+    const sizeSlider = document.getElementById("sizeSlider");
+    const sizeLabel = document.getElementById("sizeLabel");
+    const toastStack = document.getElementById("toastStack");
 
-    fontSizeEl.value = state.fontSize;
-    tileSizeEl.value = String(state.tileSize);
     document.body.dataset.font = state.fontSize;
+    groupDoneEl.checked = state.groupDone;
+    fontSelectEl.value = state.fontSize;
+    sizeSlider.value = String(state.tileSize);
     document.documentElement.style.setProperty("--tile-scale", String(state.tileSize / 100));
-    tileLabelEl.textContent = `${state.tileSize}%`;
+    sizeLabel.textContent = `${state.tileSize}%`;
 
     function uid() {
       return crypto?.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()).replace(".", "");
     }
 
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
     function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add("show");
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => toast.classList.remove("show"), 1300);
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.innerHTML = `<span class="toast-dot"></span><span>${escapeHtml(message)}</span>`;
+      toastStack.appendChild(toast);
+
+      let startX = 0;
+      let currentX = 0;
+      let active = false;
+
+      const dismiss = () => {
+        if (!toast.isConnected) return;
+        toast.classList.add("fade-out");
+        setTimeout(() => toast.remove(), 180);
+      };
+
+      toast.addEventListener("pointerdown", (e) => {
+        active = true;
+        startX = e.clientX;
+        currentX = startX;
+        toast.classList.add("swiping");
+        try { toast.setPointerCapture(e.pointerId); } catch (_) {}
+      });
+
+      toast.addEventListener("pointermove", (e) => {
+        if (!active) return;
+        currentX = e.clientX;
+        const dx = currentX - startX;
+        toast.style.transform = `translateX(${dx}px)`;
+        toast.style.opacity = String(Math.max(0.3, 1 - Math.abs(dx) / 200));
+      });
+
+      function finishSwipe() {
+        if (!active) return;
+        active = false;
+        const dx = currentX - startX;
+        toast.classList.remove("swiping");
+        if (Math.abs(dx) > 70) dismiss();
+        else {
+          toast.style.transform = "";
+          toast.style.opacity = "1";
+        }
+      }
+
+      toast.addEventListener("pointerup", finishSwipe);
+      toast.addEventListener("pointercancel", finishSwipe);
+      toast.addEventListener("pointerleave", finishSwipe);
+
+      setTimeout(dismiss, 3000);
     }
 
-    function sortedItems() {
-      return [...state.items].sort((a, b) => {
-        if (a.checked !== b.checked) return Number(a.checked) - Number(b.checked);
-        return a.order - b.order;
-      });
+    function sortByOrder(items) {
+      return [...items].sort((a, b) => a.order - b.order);
     }
 
-    function normalizeOrder(items = state.items) {
-      const view = [...items].sort((a, b) => {
-        if (a.checked !== b.checked) return Number(a.checked) - Number(b.checked);
-        return a.order - b.order;
-      });
-      return view.map((item, index) => ({ ...item, order: index }));
+    function visibleItems() {
+      const ordered = sortByOrder(state.items);
+      if (!state.groupDone) return ordered;
+      return [...ordered.filter(i => !i.checked), ...ordered.filter(i => i.checked)];
+    }
+
+    function normalizeOrders(items = state.items) {
+      return sortByOrder(items).map((item, index) => ({ ...item, order: index }));
     }
 
     function persistLocal() {
@@ -428,7 +604,7 @@
       state.tileSize = size;
       document.documentElement.style.setProperty("--tile-scale", String(size / 100));
       localStorage.setItem("shopping_tile_size", String(size));
-      tileLabelEl.textContent = `${size}%`;
+      sizeLabel.textContent = `${size}%`;
     }
 
     async function loadRemote() {
@@ -437,15 +613,13 @@
         if (!res.ok) throw new Error("remote load failed");
         const data = await res.json();
         if (Array.isArray(data.items)) {
-          state.items = normalizeOrder(
-            data.items
-              .map((item, index) => ({
-                id: item.id || uid(),
-                text: String(item.text || "").trim(),
-                checked: !!item.checked,
-                order: Number.isFinite(item.order) ? item.order : index,
-              }))
-              .filter(item => item.text)
+          state.items = normalizeOrders(
+            data.items.map((item, index) => ({
+              id: item.id || uid(),
+              text: String(item.text || "").trim(),
+              checked: !!item.checked,
+              order: Number.isFinite(item.order) ? item.order : index,
+            })).filter(item => item.text)
           );
           persistLocal();
           return true;
@@ -460,15 +634,13 @@
         if (!raw) return false;
         const parsed = JSON.parse(raw);
         if (!Array.isArray(parsed)) return false;
-        state.items = normalizeOrder(
-          parsed
-            .map((item, index) => ({
-              id: item.id || uid(),
-              text: String(item.text || "").trim(),
-              checked: !!item.checked,
-              order: Number.isFinite(item.order) ? item.order : index,
-            }))
-            .filter(item => item.text)
+        state.items = normalizeOrders(
+          parsed.map((item, index) => ({
+            id: item.id || uid(),
+            text: String(item.text || "").trim(),
+            checked: !!item.checked,
+            order: Number.isFinite(item.order) ? item.order : index,
+          })).filter(item => item.text)
         );
         return true;
       } catch (e) {
@@ -478,7 +650,7 @@
 
     function queueRemoteSave() {
       clearTimeout(state.syncTimer);
-      state.syncTimer = setTimeout(syncRemote, 250);
+      state.syncTimer = setTimeout(syncRemote, 220);
     }
 
     async function syncRemote() {
@@ -493,7 +665,7 @@
     }
 
     function saveNow() {
-      state.items = normalizeOrder(state.items);
+      state.items = normalizeOrders(state.items);
       render();
       queueRemoteSave();
     }
@@ -501,42 +673,41 @@
     function addItem(text) {
       const value = text.trim();
       if (!value) return;
+      const minOrder = state.items.length ? Math.min(...state.items.map(i => i.order)) : 0;
       state.items.push({
         id: uid(),
         text: value,
         checked: false,
-        order: state.items.length,
+        order: minOrder - 1,
       });
       saveNow();
-      showToast("Added");
+      showToast("Item added");
     }
 
     function toggleItem(id, checked) {
       const item = state.items.find(i => i.id === id);
       if (!item) return;
       item.checked = checked;
-      state.items = normalizeOrder(state.items);
       saveNow();
     }
 
     function deleteItem(id) {
       state.items = state.items.filter(i => i.id !== id);
-      state.items = normalizeOrder(state.items);
+      state.items = normalizeOrders(state.items);
       saveNow();
-      showToast("Deleted");
+      showToast("Item removed");
     }
 
     function clearChecks() {
       if (!state.items.some(i => i.checked)) return;
       if (!confirm("Clear all checks?")) return;
       state.items = state.items.map(i => ({ ...i, checked: false }));
-      state.items = normalizeOrder(state.items);
       saveNow();
       showToast("Checks cleared");
     }
 
     function reorderByVisibleOrder(fromId, toId) {
-      const view = sortedItems();
+      const view = visibleItems();
       const fromIndex = view.findIndex(i => i.id === fromId);
       const toIndex = view.findIndex(i => i.id === toId);
       if (fromIndex < 0 || toIndex < 0 || fromIndex === toIndex) return;
@@ -544,60 +715,73 @@
       view.splice(toIndex, 0, moving);
       state.items = view.map((item, index) => ({ ...item, order: index }));
       saveNow();
+      showToast("Order updated");
+    }
+
+    function createItemNode(item) {
+      const li = document.createElement("li");
+      li.className = "item" + (item.checked ? " done" : "");
+      li.dataset.id = item.id;
+      li.innerHTML = `
+        <div class="check-wrap">
+          <input type="checkbox" class="check" data-action="toggle" data-id="${item.id}" ${item.checked ? "checked" : ""} />
+        </div>
+        <div class="text">${escapeHtml(item.text)}</div>
+        <div class="actions">
+          <div class="drag-handle" draggable="true" data-action="drag" data-id="${item.id}" title="Drag">≡</div>
+        </div>
+      `;
+      return li;
     }
 
     function render() {
-      const view = sortedItems();
-      const fragment = document.createDocumentFragment();
-      listEl.replaceChildren();
+      const scrollY = window.scrollY;
+      const root = document.createElement("div");
 
-      for (const item of view) {
-        const li = document.createElement("li");
-        li.className = "item" + (item.checked ? " done" : "");
-        li.dataset.id = item.id;
+      if (!state.groupDone) {
+        const list = document.createElement("ul");
+        list.className = "list";
+        for (const item of visibleItems()) list.appendChild(createItemNode(item));
+        root.appendChild(list);
+      } else {
+        const ordered = sortByOrder(state.items);
+        const todo = ordered.filter(i => !i.checked);
+        const done = ordered.filter(i => i.checked);
 
-        li.innerHTML = `
-          <div class="check-wrap">
-            <input type="checkbox" class="check" data-action="toggle" data-id="${item.id}" ${item.checked ? "checked" : ""} />
-          </div>
-          <div class="text">${escapeHtml(item.text)}</div>
-          <div class="actions">
-            <div class="drag-handle" draggable="true" data-action="drag" data-id="${item.id}" title="Drag">≡</div>
-            <button type="button" class="delete-btn" data-action="delete" data-id="${item.id}" title="Delete">×</button>
-          </div>
-        `;
+        const todoList = document.createElement("ul");
+        todoList.className = "list";
+        for (const item of todo) todoList.appendChild(createItemNode(item));
+        root.appendChild(todoList);
 
-        fragment.appendChild(li);
+        if (done.length) {
+          const heading = document.createElement("div");
+          heading.className = "section-title";
+          heading.textContent = "Done";
+          root.appendChild(heading);
+
+          const doneList = document.createElement("ul");
+          doneList.className = "list";
+          for (const item of done) doneList.appendChild(createItemNode(item));
+          root.appendChild(doneList);
+        }
       }
 
-      listEl.appendChild(fragment);
+      contentRoot.replaceChildren(root);
+      requestAnimationFrame(() => window.scrollTo({ top: scrollY, left: 0, behavior: "auto" }));
     }
 
-    function escapeHtml(str) {
-      return str
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#39;");
+    function getItemFromEventTarget(target) {
+      return target && target.closest ? target.closest(".item") : null;
     }
 
-    listEl.addEventListener("change", (e) => {
+    document.addEventListener("change", (e) => {
       const target = e.target;
       if (target.matches('input[type="checkbox"][data-action="toggle"]')) {
         toggleItem(target.dataset.id, target.checked);
       }
     });
 
-    listEl.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-action]");
-      if (!btn) return;
-      if (btn.dataset.action === "delete") {
-        deleteItem(btn.dataset.id);
-      }
-    });
-
-    listEl.addEventListener("dragstart", (e) => {
+    document.addEventListener("dragstart", (e) => {
       const handle = e.target.closest('.drag-handle[data-action="drag"]');
       if (!handle) return;
       state.dragId = handle.dataset.id;
@@ -605,16 +789,16 @@
       e.dataTransfer.setData("text/plain", state.dragId);
     });
 
-    listEl.addEventListener("dragover", (e) => {
+    document.addEventListener("dragover", (e) => {
       if (!state.dragId) return;
-      const item = e.target.closest(".item");
+      const item = getItemFromEventTarget(e.target);
       if (!item) return;
       e.preventDefault();
     });
 
-    listEl.addEventListener("drop", (e) => {
+    document.addEventListener("drop", (e) => {
       if (!state.dragId) return;
-      const item = e.target.closest(".item");
+      const item = getItemFromEventTarget(e.target);
       if (!item) return;
       e.preventDefault();
       const fromId = state.dragId || e.dataTransfer.getData("text/plain");
@@ -623,10 +807,11 @@
       state.dragId = null;
     });
 
-    listEl.addEventListener("pointerdown", (e) => {
-      const item = e.target.closest(".item");
+    document.addEventListener("pointerdown", (e) => {
+      const item = getItemFromEventTarget(e.target);
       if (!item) return;
-      if (e.target.closest(".drag-handle") || e.target.closest(".check") || e.target.closest(".delete-btn")) return;
+      if (e.target.closest(".drag-handle") || e.target.closest(".check")) return;
+
       state.swipeItem = {
         id: item.dataset.id,
         el: item,
@@ -638,43 +823,40 @@
       try { item.setPointerCapture(e.pointerId); } catch (_) {}
     });
 
-    listEl.addEventListener("pointermove", (e) => {
+    document.addEventListener("pointermove", (e) => {
       if (!state.swipeItem || !state.swipeItem.active) return;
       state.swipeItem.currentX = e.clientX;
-      const deltaX = state.swipeItem.currentX - state.swipeItem.startX;
-      state.swipeItem.el.style.transform = `translateX(${deltaX}px)`;
-      state.swipeItem.el.style.opacity = String(Math.max(0.35, 1 - Math.abs(deltaX) / 240));
+      const dx = state.swipeItem.currentX - state.swipeItem.startX;
+      state.swipeItem.el.style.transform = `translateX(${dx}px)`;
+      state.swipeItem.el.style.opacity = String(Math.max(0.35, 1 - Math.abs(dx) / 240));
     });
 
     function finishSwipe() {
       if (!state.swipeItem) return;
-      const { el, startX, currentX } = state.swipeItem;
-      const deltaX = currentX - startX;
+      const { el, startX, currentX, id } = state.swipeItem;
+      const dx = currentX - startX;
       el.classList.remove("swiping");
-
-      if (Math.abs(deltaX) > 90) {
+      if (Math.abs(dx) > 90) {
         el.classList.add("deleting");
-        const id = state.swipeItem.id;
         state.swipeItem = null;
         setTimeout(() => deleteItem(id), 110);
         return;
       }
-
       el.style.transform = "";
       el.style.opacity = "";
       state.swipeItem = null;
     }
 
-    listEl.addEventListener("pointerup", finishSwipe);
-    listEl.addEventListener("pointercancel", finishSwipe);
-    listEl.addEventListener("pointerleave", (e) => {
-      if (state.swipeItem && state.swipeItem.active) finishSwipe();
+    document.addEventListener("pointerup", finishSwipe);
+    document.addEventListener("pointercancel", finishSwipe);
+    document.addEventListener("pointerleave", () => {
+      if (state.swipeItem) finishSwipe();
     });
 
     addBtn.addEventListener("click", () => {
       addItem(inputEl.value);
       inputEl.value = "";
-      inputEl.focus();
+      inputEl.focus({ preventScroll: true });
     });
 
     inputEl.addEventListener("keydown", (e) => {
@@ -683,19 +865,29 @@
 
     clearBtn.addEventListener("click", clearChecks);
 
-    fontSizeEl.addEventListener("change", () => {
-      setFontSize(fontSizeEl.value);
+    groupDoneEl.addEventListener("change", () => {
+      state.groupDone = groupDoneEl.checked;
+      localStorage.setItem("shopping_group_done", String(state.groupDone));
+      render();
+      showToast(state.groupDone ? "Done grouping on" : "Done grouping off");
+    });
+
+    fontSelectEl.addEventListener("change", () => {
+      setFontSize(fontSelectEl.value);
       showToast("Font updated");
     });
 
-    tileSizeEl.addEventListener("input", () => {
-      setTileSize(Number(tileSizeEl.value));
+    sizeSlider.addEventListener("input", () => {
+      const size = Number(sizeSlider.value);
+      state.tileSize = size;
+      setTileSize(size);
+      showToast(`Size ${size}%`);
     });
 
     async function init() {
       const remoteLoaded = await loadRemote();
       if (!remoteLoaded) loadLocal();
-      state.items = normalizeOrder(state.items);
+      state.items = normalizeOrders(state.items);
       render();
     }
 
