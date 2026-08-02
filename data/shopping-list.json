@@ -291,8 +291,8 @@
       "id": "204ca0c5-ef54-4aa7-a66f-7b2315bf2873",
       "text": "Burger patty",
       "checked": false,
-      "order": 42,
-      "groupId": null
+      "order": 1,
+      "groupId": "f5f83a29-29a5-40df-af51-7a34184b90f3"
     },
     {
       "id": "29e70057-5790-458e-b23d-a539c0f440b9",
@@ -305,7 +305,7 @@
       "id": "766bc361-b6e8-41e2-94bc-091d2d2e8d6d",
       "text": "Atta",
       "checked": false,
-      "order": 43,
+      "order": 42,
       "groupId": null
     },
     {
