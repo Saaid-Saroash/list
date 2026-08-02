@@ -13,7 +13,7 @@
       --radius-lg: 18px;
       --radius-md: 14px;
       --shadow: 0 16px 40px rgba(0,0,0,.26);
-      --glass-blur: blur(18px) saturate(170%);
+      --glass-blur: blur(14px) saturate(160%);
       --accent: #68e8ff;
       --accent2: #9b7bff;
       --success: #35d07f;
@@ -45,23 +45,23 @@
 
     body[data-theme="light"] {
       color-scheme: light;
-      --bg0: #eef4fb;
-      --bg1: #dfeaf6;
-      --surface: rgba(255,255,255,.62);
-      --surface-2: rgba(255,255,255,.50);
+      --bg0: #ffffff;
+      --bg1: #f4f6f9;
+      --surface: rgba(255,255,255,.96);
+      --surface-2: rgba(255,255,255,.84);
       --text: #102235;
-      --muted: #51627a;
-      --line: rgba(16,34,53,.12);
-      --grid: rgba(16,34,53,.05);
-      --panel-border: rgba(16,34,53,.10);
-      --item-bg: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.72));
-      --item-bg-hover: rgba(104,232,255,.10);
-      --panel-grad: linear-gradient(180deg, rgba(255,255,255,.76), rgba(242,248,255,.60));
-      --shell-grad: linear-gradient(180deg, rgba(255,255,255,.55), rgba(243,248,255,.42));
-      --chip-bg: rgba(255,255,255,.72);
-      --switch-off: rgba(16,34,53,.14);
+      --muted: #5a6b80;
+      --line: rgba(16,34,53,.10);
+      --grid: rgba(16,34,53,.04);
+      --panel-border: rgba(16,34,53,.08);
+      --item-bg: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+      --item-bg-hover: rgba(16,34,53,.04);
+      --panel-grad: linear-gradient(180deg, rgba(255,255,255,.96), rgba(246,248,252,.92));
+      --shell-grad: linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.94));
+      --chip-bg: rgba(255,255,255,.96);
+      --switch-off: rgba(16,34,53,.12);
       --switch-knob: #ffffff;
-      --done-chip: rgba(53,208,127,.22);
+      --done-chip: rgba(53,208,127,.18);
       --btn-text-dark: #082132;
       --btn-text-warm: #2c1805;
     }
@@ -73,7 +73,7 @@
 
     * { box-sizing: border-box; }
     html, body { height: 100%; }
-    html { scroll-behavior: auto; }
+    html { scroll-behavior: auto; overscroll-behavior-y: none; }
 
     body {
       margin: 0;
@@ -81,12 +81,15 @@
       font-size: calc(15px * var(--font-scale));
       color: var(--text);
       background:
-        radial-gradient(circle at 10% 10%, rgba(104,232,255,.15), transparent 18%),
-        radial-gradient(circle at 90% 8%, rgba(155,123,255,.13), transparent 18%),
-        radial-gradient(circle at 50% 100%, rgba(53,208,127,.08), transparent 18%),
+        radial-gradient(circle at 10% 10%, rgba(104,232,255,.12), transparent 18%),
+        radial-gradient(circle at 90% 8%, rgba(155,123,255,.10), transparent 18%),
+        radial-gradient(circle at 50% 100%, rgba(53,208,127,.06), transparent 18%),
         linear-gradient(180deg, var(--bg1), var(--bg0));
       overflow-x: hidden;
+      overflow-y: auto;
       overflow-anchor: none;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
     body::before {
@@ -132,6 +135,7 @@
       -webkit-backdrop-filter: var(--glass-blur);
       padding: 12px;
       overflow: hidden;
+      contain: layout paint;
     }
 
     .toolbar {
@@ -144,6 +148,7 @@
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       padding-bottom: 2px;
+      touch-action: pan-x;
     }
     .toolbar::-webkit-scrollbar { display: none; }
 
@@ -269,6 +274,7 @@
       overflow: hidden;
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
+      contain: layout paint;
     }
 
     .section-head {
@@ -341,9 +347,10 @@
       border: 1px solid var(--panel-border);
       border-radius: 18px;
       overflow: hidden;
-      touch-action: none;
+      touch-action: pan-y;
       will-change: transform, opacity;
       position: relative;
+      contain: layout paint;
     }
     .item:hover { background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05)); }
     body[data-theme="light"] .item:hover { background: var(--item-bg-hover); }
@@ -491,6 +498,7 @@
       .item { grid-template-columns: auto minmax(0, 1fr) auto; }
       .drag-handle { width: 34px; height: 34px; }
       .small-btn { padding: 8px 9px; }
+      .shell, .panel { backdrop-filter: blur(10px) saturate(150%); -webkit-backdrop-filter: blur(10px) saturate(150%); }
     }
   </style>
 </head>
@@ -754,7 +762,7 @@
 
     function queueRemoteSave() {
       clearTimeout(state.syncTimer);
-      state.syncTimer = setTimeout(syncRemote, 180);
+      state.syncTimer = setTimeout(syncRemote, 350);
     }
 
     async function syncRemote() {
@@ -928,10 +936,7 @@
       zone.appendChild(list);
       shell.appendChild(zone);
       return shell;
-    }
-
-    function render() {
-      const scrollY = window.scrollY;
+    }    function render() {
       const root = document.createDocumentFragment();
 
       if (state.groupDone) {
@@ -960,9 +965,7 @@
         root.appendChild(buildListSection("List", getItemsByGroup(null), null, false));
         getOrderedGroups().forEach(group => root.appendChild(buildListSection(group.name, getItemsByGroup(group.id), group.id, true)));
       }
-
       contentRoot.replaceChildren(root);
-      requestAnimationFrame(() => window.scrollTo({ top: scrollY, left: 0, behavior: "auto" }));
     }
 
     function handleItemDrop(sourceId, x, y) {
