@@ -290,7 +290,7 @@
     {
       "id": "431198ce-fa42-453b-9c9a-180c9c062bf5",
       "text": "Surf",
-      "checked": false,
+      "checked": true,
       "order": 41,
       "groupId": null
     },
