@@ -25,7 +25,7 @@
       "id": "59af321c-8095-40ae-9999-e18b43f79c47",
       "text": "Rice",
       "checked": false,
-      "order": 4,
+      "order": 5,
       "groupId": null
     },
     {
@@ -39,7 +39,7 @@
       "id": "c4d352d6-d638-4fa2-8ff8-314b411e5bb7",
       "text": "Black pepper",
       "checked": false,
-      "order": 5,
+      "order": 4,
       "groupId": null
     },
     {
