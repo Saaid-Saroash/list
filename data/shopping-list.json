@@ -249,21 +249,21 @@
       "id": "86ea030b-63f6-4b54-abb4-307c15a327c3",
       "text": "Biscuits",
       "checked": false,
-      "order": 35,
+      "order": 37,
       "groupId": null
     },
     {
       "id": "7ab877b3-63ee-4c69-ac8b-f36d493c79a9",
       "text": "Chips",
       "checked": false,
-      "order": 36,
+      "order": 35,
       "groupId": null
     },
     {
       "id": "f2816aa8-09fc-4313-9a6f-7d4c8b5bb665",
       "text": "Chocolates",
       "checked": false,
-      "order": 37,
+      "order": 36,
       "groupId": null
     },
     {
