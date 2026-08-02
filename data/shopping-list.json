@@ -1,20 +1,20 @@
 {
   "items": [
     {
-      "id": "ea00970e-425f-4053-bbbe-eb6a1df0c130",
-      "text": "Tea",
-      "checked": false,
-      "order": 0
-    },
-    {
       "id": "d162147f-993b-475b-87de-a34278be0aa8",
       "text": "Harpic",
       "checked": true,
-      "order": 1
+      "order": 0
     },
     {
       "id": "59af321c-8095-40ae-9999-e18b43f79c47",
       "text": "Rice",
+      "checked": false,
+      "order": 1
+    },
+    {
+      "id": "ea00970e-425f-4053-bbbe-eb6a1df0c130",
+      "text": "Tea",
       "checked": false,
       "order": 2
     },
