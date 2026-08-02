@@ -311,7 +311,7 @@
     {
       "id": "6d99d1cc-8a91-41ff-b9cd-b667436eec7d",
       "text": "Oil",
-      "checked": true,
+      "checked": false,
       "order": 0,
       "groupId": null
     }
