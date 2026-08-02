@@ -3,14 +3,14 @@
     {
       "id": "ea00970e-425f-4053-bbbe-eb6a1df0c130",
       "text": "Tea",
-      "checked": true,
+      "checked": false,
       "order": 0,
       "groupId": null
     },
     {
       "id": "431198ce-fa42-453b-9c9a-180c9c062bf5",
       "text": "Surf",
-      "checked": true,
+      "checked": false,
       "order": 1,
       "groupId": null
     },
