@@ -6,17 +6,20 @@
   <title>Shopping List</title>
   <style>
     :root {
-      --bg: #081018;
-      --glass: rgba(17, 23, 34, 0.56);
-      --text: #e8edf5;
-      --muted: #9aa8be;
+      --bg0: #060b12;
+      --bg1: #08111a;
+      --glass: rgba(18, 24, 36, 0.58);
+      --glass2: rgba(255, 255, 255, 0.06);
+      --text: #e9eef7;
+      --muted: #a0aec3;
       --line: rgba(255, 255, 255, 0.10);
-      --accent: #63e6ff;
+      --accent: #68e8ff;
+      --accent2: #9b7bff;
       --success: #35d07f;
-      --shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
-      --radius-xl: 28px;
-      --radius-lg: 20px;
-      --radius-md: 16px;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.26);
+      --radius-xl: 26px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
       --font-scale: 1;
       --tile-scale: 1;
     }
@@ -36,214 +39,247 @@
       font-size: calc(15px * var(--font-scale));
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(99, 230, 255, 0.16), transparent 24%),
-        radial-gradient(circle at 80% 10%, rgba(139, 92, 246, 0.15), transparent 26%),
-        linear-gradient(180deg, #071018 0%, #081018 100%);
+        radial-gradient(circle at 8% 10%, rgba(104, 232, 255, 0.16), transparent 18%),
+        radial-gradient(circle at 92% 8%, rgba(155, 123, 255, 0.14), transparent 18%),
+        radial-gradient(circle at 50% 100%, rgba(53, 208, 127, 0.10), transparent 16%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
       overflow-x: hidden;
       overflow-anchor: none;
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.12;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.35), transparent 85%);
+    }
+
     .app {
-      max-width: 1060px;
+      width: min(1040px, calc(100vw - 20px));
       margin: 0 auto;
-      padding: 18px 14px 34px;
+      padding: 12px 0 30px;
     }
 
     .panel {
+      width: min(760px, calc(100vw - 20px));
+      margin: 0 auto;
       position: sticky;
-      top: 12px;
-      z-index: 5;
-      background: linear-gradient(180deg, rgba(20, 28, 42, 0.72), rgba(16, 22, 33, 0.58));
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      box-shadow: var(--shadow);
+      top: 10px;
+      z-index: 10;
+      background: linear-gradient(180deg, rgba(22, 30, 44, 0.72), rgba(16, 22, 34, 0.58));
+      border: 1px solid rgba(255,255,255,0.10);
       border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
       backdrop-filter: blur(18px) saturate(160%);
       -webkit-backdrop-filter: blur(18px) saturate(160%);
-      padding: 16px;
+      padding: 12px;
+      overflow: hidden;
     }
 
-    .panel-top {
+    .toolbar {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(24px, 3.8vw, 34px);
-      line-height: 1.05;
-      letter-spacing: -0.04em;
-    }
-
-    .controls {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) auto auto auto;
-      gap: 10px;
+      gap: 8px;
       align-items: stretch;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 2px;
     }
+    .toolbar::-webkit-scrollbar { display: none; }
 
-    .settings-row {
-      display: grid;
-      grid-template-columns: auto auto auto;
-      gap: 10px;
-      align-items: stretch;
-      margin-top: 10px;
-    }
-
+    .chip,
     .input,
     .select,
-    .toggle-wrap,
+    .toggle,
     .range-wrap {
-      width: 100%;
+      flex: 0 0 auto;
       border: 1px solid var(--line);
       background: rgba(8, 12, 18, 0.72);
       color: var(--text);
       border-radius: var(--radius-md);
-      padding: 13px 14px;
-      outline: none;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+      min-height: 42px;
     }
 
     .input,
     .select {
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
-      font-size: 1em;
+      padding: 10px 12px;
+      outline: none;
+      font-size: 0.95em;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      min-width: 150px;
     }
-
+    .input { width: 220px; }
     .input:focus,
     .select:focus {
-      border-color: rgba(99, 230, 255, 0.58);
-      box-shadow: 0 0 0 3px rgba(99, 230, 255, 0.10);
+      border-color: rgba(104, 232, 255, 0.60);
+      box-shadow: 0 0 0 3px rgba(104, 232, 255, 0.10);
     }
 
+    .chip,
     .btn {
       border: none;
-      border-radius: var(--radius-md);
-      padding: 13px 15px;
-      font-weight: 700;
-      font-size: 0.95em;
-      color: #061018;
       cursor: pointer;
-      transition: transform 0.15s ease, filter 0.15s ease;
-      white-space: nowrap;
       user-select: none;
+      padding: 10px 12px;
+      font-weight: 700;
+      font-size: 0.88em;
+      white-space: nowrap;
+      transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
     }
-
+    .chip:hover,
     .btn:hover { transform: translateY(-1px); }
+    .chip:active,
     .btn:active { transform: translateY(1px); }
 
-    .btn-add { background: linear-gradient(135deg, var(--accent), #9ae6ff); }
-    .btn-clear { background: linear-gradient(135deg, #ffd166, #ff8f70); }
+    .btn-add { background: linear-gradient(135deg, var(--accent), #b9f1ff); color: #03121a; }
+    .btn-group { background: linear-gradient(135deg, #d2b7ff, #a78bfa); color: #100817; }
+    .btn-clear { background: linear-gradient(135deg, #ffd166, #ff956b); color: #1a0f05; }
 
-    .toggle-wrap {
+    .toggle {
       display: flex;
       align-items: center;
-      gap: 10px;
       justify-content: space-between;
-      min-width: 0;
+      gap: 10px;
+      min-width: 136px;
+      padding: 10px 12px;
       cursor: pointer;
       user-select: none;
-      padding: 12px 14px;
     }
-
-    .toggle-wrap span {
-      font-size: 0.96em;
-      line-height: 1.2;
-    }
-
+    .toggle span { font-size: 0.88em; line-height: 1.1; }
+    .toggle input { display: none; }
     .switch {
-      position: relative;
-      width: 46px;
-      height: 26px;
-      flex: 0 0 auto;
+      width: 42px;
+      height: 24px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      flex: 0 0 auto;
       transition: 0.18s ease;
     }
-
     .switch::after {
       content: "";
       position: absolute;
       top: 3px;
       left: 3px;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
-      background: #dfe7f2;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+      background: #e5edf8;
       transition: 0.18s ease;
     }
-
-    .toggle-wrap input { display: none; }
-    .toggle-wrap input:checked + .switch {
-      background: rgba(53, 208, 127, 0.18);
-      border-color: rgba(53, 208, 127, 0.28);
+    .toggle input:checked + .switch {
+      background: rgba(53,208,127,0.18);
+      border-color: rgba(53,208,127,0.28);
     }
-    .toggle-wrap input:checked + .switch::after {
-      left: 23px;
-      background: #7ef0a8;
-    }
+    .toggle input:checked + .switch::after { left: 22px; background: #7ef0a8; }
 
     .range-wrap {
       display: grid;
-      gap: 8px;
-      padding-top: 10px;
-      padding-bottom: 10px;
-      min-width: 0;
+      gap: 6px;
+      padding: 8px 12px 10px;
+      min-width: 160px;
     }
-
     .range-label {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       gap: 10px;
       color: var(--muted);
-      font-size: 0.88em;
-      line-height: 1;
+      font-size: 0.84em;
       user-select: none;
     }
-
     .range {
       width: 100%;
       accent-color: var(--accent);
     }
 
     .content {
-      margin-top: 14px;
+      width: min(1040px, calc(100vw - 20px));
+      margin: 14px auto 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .group-shell,
+    .ungrouped-shell {
+      background: linear-gradient(180deg, rgba(22, 30, 44, 0.50), rgba(12, 18, 28, 0.38));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(16px) saturate(155%);
+      -webkit-backdrop-filter: blur(16px) saturate(155%);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 12px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
     }
 
     .section-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 14px 0 8px;
-      color: rgba(232, 237, 245, 0.80);
-      font-size: 0.95em;
-      letter-spacing: 0.02em;
+      margin: 0;
+      font-size: 0.92em;
+      letter-spacing: 0.03em;
+      color: rgba(233, 238, 247, 0.82);
+      text-transform: uppercase;
       user-select: none;
     }
 
-    .section-title::before,
-    .section-title::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.08);
+    .group-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    .small-btn {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border-radius: 11px;
+      padding: 8px 10px;
+      font-size: 0.80em;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    .small-btn:hover { filter: brightness(1.05); }
+
+    .drop-zone {
+      padding: 12px;
     }
 
     .list {
       margin: 0;
       padding: 0;
       list-style: none;
-      display: flex;
-      flex-direction: column;
+      display: grid;
       gap: 8px;
-      min-height: 48px;
-      contain: content;
+      min-height: 24px;
+    }
+
+    .done-title {
+      margin: 10px 0 8px;
+      padding: 0 12px;
+      color: rgba(233,238,247,0.72);
+      font-size: 0.85em;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      user-select: none;
     }
 
     .item {
@@ -253,38 +289,30 @@
       align-items: center;
       padding: calc(12px * var(--tile-scale)) 12px;
       min-height: calc(56px * var(--tile-scale));
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 18px;
       overflow: hidden;
-      touch-action: pan-y;
+      touch-action: none;
       will-change: transform, opacity;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+      position: relative;
     }
 
-    .item::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(99, 230, 255, 0.08), transparent 30%, transparent 70%, rgba(139, 92, 246, 0.08));
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.15s ease;
+    .item.dragging {
+      opacity: 0.62;
+      transform: scale(0.985);
     }
-
-    .item:hover::before { opacity: 1; }
 
     .item.done .text {
-      color: rgba(232, 237, 245, 0.58);
+      color: rgba(233, 238, 247, 0.58);
       text-decoration: line-through;
       text-decoration-thickness: 2px;
     }
 
     .check-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       width: 22px;
+      display: grid;
+      place-items: center;
       flex: 0 0 auto;
     }
 
@@ -293,7 +321,7 @@
       width: 22px;
       height: 22px;
       border-radius: 7px;
-      border: 2px solid rgba(118, 137, 167, 0.92);
+      border: 2px solid rgba(120, 139, 166, 0.96);
       background: rgba(7, 10, 15, 0.84);
       display: grid;
       place-items: center;
@@ -301,7 +329,6 @@
       margin: 0;
       transition: 0.15s ease;
     }
-
     .check::after {
       content: "";
       width: 10px;
@@ -310,13 +337,11 @@
       border-bottom: 3px solid transparent;
       transform: rotate(-45deg) translateY(-1px);
     }
-
     .check:checked {
-      border-color: rgba(53, 208, 127, 0.95);
-      background: rgba(53, 208, 127, 0.16);
-      box-shadow: 0 0 0 4px rgba(53, 208, 127, 0.08);
+      border-color: rgba(53,208,127,0.95);
+      background: rgba(53,208,127,0.16);
+      box-shadow: 0 0 0 4px rgba(53,208,127,0.08);
     }
-
     .check:checked::after {
       border-left-color: var(--success);
       border-bottom-color: var(--success);
@@ -329,13 +354,6 @@
       user-select: none;
     }
 
-    .actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex: 0 0 auto;
-    }
-
     .drag-handle {
       width: 36px;
       height: 36px;
@@ -343,26 +361,21 @@
       place-items: center;
       border-radius: 12px;
       user-select: none;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      background: rgba(255, 255, 255, 0.05);
-      color: #d4dce8;
-      flex: 0 0 auto;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.05);
+      color: #d6ddea;
       cursor: grab;
       font-size: 18px;
       line-height: 1;
       touch-action: none;
+      flex: 0 0 auto;
     }
-
     .drag-handle:active { cursor: grabbing; }
 
-    .item.swiping {
-      transition: none;
-    }
-
-    .item.deleting {
-      opacity: 0;
-      transform: scale(0.98);
-      transition: opacity 0.15s ease, transform 0.15s ease;
+    .drop-active {
+      outline: 1px dashed rgba(104,232,255,0.50);
+      outline-offset: 2px;
+      background: rgba(104,232,255,0.06);
     }
 
     .toast-stack {
@@ -379,8 +392,8 @@
 
     .toast {
       pointer-events: auto;
-      background: linear-gradient(180deg, rgba(20, 28, 42, 0.90), rgba(12, 18, 28, 0.88));
-      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: linear-gradient(180deg, rgba(20,28,42,0.90), rgba(12,18,28,0.88));
+      border: 1px solid rgba(255,255,255,0.10);
       color: var(--text);
       border-radius: 999px;
       padding: 11px 14px;
@@ -398,64 +411,46 @@
       touch-action: pan-y;
       user-select: none;
     }
-
     .toast.swiping { transition: none; }
     .toast.fade-out { opacity: 0; transform: translateX(-18px); }
-
     .toast-dot {
       width: 9px;
       height: 9px;
       border-radius: 50%;
       flex: 0 0 auto;
       background: var(--accent);
-      box-shadow: 0 0 0 6px rgba(99, 230, 255, 0.10);
+      box-shadow: 0 0 0 6px rgba(104,232,255,0.10);
     }
 
-    @media (max-width: 980px) {
-      .controls { grid-template-columns: 1fr 1fr; }
-      .input { grid-column: 1 / -1; }
-      .btn-add { grid-column: 1 / span 1; }
-      .btn-clear { grid-column: 2 / span 1; }
-      .toggle-wrap { grid-column: 1 / -1; }
-      .font-select { grid-column: 1 / span 1; }
-      .range-wrap { grid-column: 2 / span 1; }
+    @media (max-width: 860px) {
+      .panel { width: min(100%, calc(100vw - 16px)); }
+      .content { width: min(100%, calc(100vw - 16px)); }
+      .input { width: 180px; }
     }
 
     @media (max-width: 560px) {
-      .panel { padding: 14px; }
-      .controls { grid-template-columns: 1fr; }
-      .input,
-      .btn-add,
-      .btn-clear,
-      .toggle-wrap,
-      .range-wrap,
-      .font-select { grid-column: 1 / -1; }
-      .item { grid-template-columns: auto minmax(0, 1fr) auto; }
-      .actions { gap: 6px; }
-      .drag-handle { width: 34px; height: 34px; }
+      .panel { top: 8px; padding: 10px; }
+      .input { width: 160px; }
       .toast-stack { left: 12px; bottom: 12px; right: 12px; max-width: calc(100vw - 24px); }
+      .item { grid-template-columns: auto minmax(0, 1fr) auto; }
+      .drag-handle { width: 34px; height: 34px; }
     }
   </style>
 </head>
 <body data-font="medium">
   <div class="app">
     <div class="panel">
-      <div class="panel-top">
-        <div>
-          <h1>Shopping List</h1>
-        </div>
-      </div>
-
-      <div class="controls">
+      <div class="toolbar">
         <input id="itemInput" class="input" type="text" placeholder="Add item" maxlength="120" autocomplete="off" />
-        <button id="addBtn" class="btn btn-add" type="button">Add Item</button>
-        <button id="clearBtn" class="btn btn-clear" type="button">Clear Checks</button>
-        <label class="toggle-wrap" title="Move done items to bottom">
+        <button id="addBtn" class="chip btn-add" type="button">Add</button>
+        <button id="groupBtn" class="chip btn-group" type="button">+ Group</button>
+        <button id="clearBtn" class="chip btn-clear" type="button">Clear Checks</button>
+        <label class="toggle" title="Move checked items to the bottom with Done heading">
           <span>Group Done</span>
           <input id="groupDone" type="checkbox" />
           <span class="switch"></span>
         </label>
-        <select id="fontSelect" class="select font-select" aria-label="Font size">
+        <select id="fontSelect" class="select" aria-label="Font size">
           <option value="small">Font: Small</option>
           <option value="medium">Font: Medium</option>
           <option value="large">Font: Large</option>
@@ -468,28 +463,27 @@
       </div>
     </div>
 
-    <div class="content" id="contentRoot"></div>
+    <div id="contentRoot" class="content"></div>
   </div>
 
   <div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="false"></div>
 
   <script>
-    const STORAGE_KEY = "shopping_list_dark_v5";
+    const STORAGE_KEY = "shopping_list_state_v6";
     const API_BASE_URL = (() => {
       const saved = localStorage.getItem("shopping_api_base");
       if (saved) return saved.replace(/\/$/, "");
       if (location.hostname.endsWith(".vercel.app")) return location.origin;
       return "https://YOUR-VERCEL-DOMAIN.vercel.app";
     })();
-
     const API_LIST_URL = `${API_BASE_URL}/api/list`;
     const API_SAVE_URL = `${API_BASE_URL}/api/save`;
 
     const state = {
       items: [],
+      groups: [],
+      drag: null,
       syncTimer: null,
-      dragId: null,
-      swipeItem: null,
       fontSize: localStorage.getItem("shopping_font_size") || "medium",
       tileSize: Number(localStorage.getItem("shopping_tile_size") || 100),
       groupDone: localStorage.getItem("shopping_group_done") === "true",
@@ -498,6 +492,7 @@
     const contentRoot = document.getElementById("contentRoot");
     const inputEl = document.getElementById("itemInput");
     const addBtn = document.getElementById("addBtn");
+    const groupBtn = document.getElementById("groupBtn");
     const clearBtn = document.getElementById("clearBtn");
     const groupDoneEl = document.getElementById("groupDone");
     const fontSelectEl = document.getElementById("fontSelect");
@@ -557,7 +552,7 @@
         toast.style.opacity = String(Math.max(0.3, 1 - Math.abs(dx) / 200));
       });
 
-      function finishSwipe() {
+      const finish = () => {
         if (!active) return;
         active = false;
         const dx = currentX - startX;
@@ -567,31 +562,16 @@
           toast.style.transform = "";
           toast.style.opacity = "1";
         }
-      }
+      };
 
-      toast.addEventListener("pointerup", finishSwipe);
-      toast.addEventListener("pointercancel", finishSwipe);
-      toast.addEventListener("pointerleave", finishSwipe);
-
+      toast.addEventListener("pointerup", finish);
+      toast.addEventListener("pointercancel", finish);
+      toast.addEventListener("pointerleave", finish);
       setTimeout(dismiss, 3000);
     }
 
-    function sortByOrder(items) {
-      return [...items].sort((a, b) => a.order - b.order);
-    }
-
-    function visibleItems() {
-      const ordered = sortByOrder(state.items);
-      if (!state.groupDone) return ordered;
-      return [...ordered.filter(i => !i.checked), ...ordered.filter(i => i.checked)];
-    }
-
-    function normalizeOrders(items = state.items) {
-      return sortByOrder(items).map((item, index) => ({ ...item, order: index }));
-    }
-
     function persistLocal() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ items: state.items, groups: state.groups }));
     }
 
     function setFontSize(size) {
@@ -607,25 +587,24 @@
       sizeLabel.textContent = `${size}%`;
     }
 
-    async function loadRemote() {
-      try {
-        const res = await fetch(API_LIST_URL, { cache: "no-store" });
-        if (!res.ok) throw new Error("remote load failed");
-        const data = await res.json();
-        if (Array.isArray(data.items)) {
-          state.items = normalizeOrders(
-            data.items.map((item, index) => ({
-              id: item.id || uid(),
-              text: String(item.text || "").trim(),
-              checked: !!item.checked,
-              order: Number.isFinite(item.order) ? item.order : index,
-            })).filter(item => item.text)
-          );
-          persistLocal();
-          return true;
-        }
-      } catch (e) {}
-      return false;
+    function normalizeItemOrders(groupId) {
+      const bucket = state.items.filter(i => (i.groupId || null) === (groupId || null)).sort((a, b) => a.order - b.order);
+      bucket.forEach((item, index) => { item.order = index; });
+    }
+
+    function normalizeGroupOrders() {
+      const ordered = [...state.groups].sort((a, b) => a.order - b.order);
+      ordered.forEach((group, index) => { group.order = index; });
+    }
+
+    function getOrderedGroups() {
+      return [...state.groups].sort((a, b) => a.order - b.order);
+    }
+
+    function getOrderedItemsByGroup(groupId) {
+      return state.items
+        .filter(i => (i.groupId || null) === (groupId || null))
+        .sort((a, b) => a.order - b.order);
     }
 
     function loadLocal() {
@@ -633,19 +612,76 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return false;
         const parsed = JSON.parse(raw);
-        if (!Array.isArray(parsed)) return false;
-        state.items = normalizeOrders(
-          parsed.map((item, index) => ({
+
+        if (Array.isArray(parsed)) {
+          state.items = parsed.map((item, index) => ({
             id: item.id || uid(),
             text: String(item.text || "").trim(),
             checked: !!item.checked,
             order: Number.isFinite(item.order) ? item.order : index,
-          })).filter(item => item.text)
-        );
+            groupId: item.groupId || null,
+          })).filter(item => item.text);
+          state.groups = [];
+        } else if (parsed && typeof parsed === "object") {
+          state.items = Array.isArray(parsed.items)
+            ? parsed.items.map((item, index) => ({
+                id: item.id || uid(),
+                text: String(item.text || "").trim(),
+                checked: !!item.checked,
+                order: Number.isFinite(item.order) ? item.order : index,
+                groupId: item.groupId || null,
+              })).filter(item => item.text)
+            : [];
+          state.groups = Array.isArray(parsed.groups)
+            ? parsed.groups.map((g, index) => ({
+                id: g.id || uid(),
+                name: String(g.name || "Group").trim() || "Group",
+                order: Number.isFinite(g.order) ? g.order : index,
+              }))
+            : [];
+        }
+
+        normalizeGroupOrders();
+        normalizeItemOrders(null);
+        state.groups.forEach(g => normalizeItemOrders(g.id));
+        persistLocal();
         return true;
       } catch (e) {
         return false;
       }
+    }
+
+    async function loadRemote() {
+      try {
+        const res = await fetch(API_LIST_URL, { cache: "no-store" });
+        if (!res.ok) throw new Error("remote load failed");
+        const data = await res.json();
+
+        if (Array.isArray(data.items) || Array.isArray(data.groups)) {
+          state.items = Array.isArray(data.items)
+            ? data.items.map((item, index) => ({
+                id: item.id || uid(),
+                text: String(item.text || "").trim(),
+                checked: !!item.checked,
+                order: Number.isFinite(item.order) ? item.order : index,
+                groupId: item.groupId || null,
+              })).filter(item => item.text)
+            : state.items;
+          state.groups = Array.isArray(data.groups)
+            ? data.groups.map((g, index) => ({
+                id: g.id || uid(),
+                name: String(g.name || "Group").trim() || "Group",
+                order: Number.isFinite(g.order) ? g.order : index,
+              }))
+            : state.groups;
+          normalizeGroupOrders();
+          normalizeItemOrders(null);
+          state.groups.forEach(g => normalizeItemOrders(g.id));
+          persistLocal();
+          return true;
+        }
+      } catch (e) {}
+      return false;
     }
 
     function queueRemoteSave() {
@@ -659,13 +695,15 @@
         await fetch(API_SAVE_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ items: state.items })
+          body: JSON.stringify({ items: state.items, groups: state.groups })
         });
       } catch (e) {}
     }
 
     function saveNow() {
-      state.items = normalizeOrders(state.items);
+      normalizeGroupOrders();
+      normalizeItemOrders(null);
+      state.groups.forEach(g => normalizeItemOrders(g.id));
       render();
       queueRemoteSave();
     }
@@ -673,15 +711,39 @@
     function addItem(text) {
       const value = text.trim();
       if (!value) return;
-      const minOrder = state.items.length ? Math.min(...state.items.map(i => i.order)) : 0;
+      const topOrder = state.items.filter(i => (i.groupId || null) === null).reduce((min, item) => Math.min(min, item.order), 0);
       state.items.push({
         id: uid(),
         text: value,
         checked: false,
-        order: minOrder - 1,
+        order: topOrder - 1,
+        groupId: null,
       });
       saveNow();
       showToast("Item added");
+    }
+
+    function addGroup() {
+      const name = prompt("Group name:");
+      if (!name) return;
+      const value = name.trim();
+      if (!value) return;
+      const nextOrder = state.groups.length ? Math.max(...state.groups.map(g => g.order)) + 1 : 0;
+      state.groups.push({ id: uid(), name: value, order: nextOrder });
+      saveNow();
+      showToast("Group added");
+    }
+
+    function deleteGroup(groupId) {
+      const group = state.groups.find(g => g.id === groupId);
+      if (!group) return;
+      if (!confirm(`Delete group \"${group.name}\"? Items will move out.`)) return;
+      state.items = state.items.map(item => item.groupId === groupId ? { ...item, groupId: null } : item);
+      state.groups = state.groups.filter(g => g.id !== groupId);
+      normalizeGroupOrders();
+      normalizeItemOrders(null);
+      saveNow();
+      showToast("Group deleted");
     }
 
     function toggleItem(id, checked) {
@@ -689,13 +751,6 @@
       if (!item) return;
       item.checked = checked;
       saveNow();
-    }
-
-    function deleteItem(id) {
-      state.items = state.items.filter(i => i.id !== id);
-      state.items = normalizeOrders(state.items);
-      saveNow();
-      showToast("Item removed");
     }
 
     function clearChecks() {
@@ -706,151 +761,351 @@
       showToast("Checks cleared");
     }
 
-    function reorderByVisibleOrder(fromId, toId) {
-      const view = visibleItems();
-      const fromIndex = view.findIndex(i => i.id === fromId);
-      const toIndex = view.findIndex(i => i.id === toId);
-      if (fromIndex < 0 || toIndex < 0 || fromIndex === toIndex) return;
-      const moving = view.splice(fromIndex, 1)[0];
-      view.splice(toIndex, 0, moving);
-      state.items = view.map((item, index) => ({ ...item, order: index }));
+    function moveItemToContainer(itemId, targetGroupId, targetIndex) {
+      const item = state.items.find(i => i.id === itemId);
+      if (!item) return;
+      const sourceGroupId = item.groupId || null;
+      const remaining = state.items.filter(i => i.id !== itemId);
+
+      const destItems = remaining
+        .filter(i => (i.groupId || null) === (targetGroupId || null))
+        .sort((a, b) => a.order - b.order);
+
+      const moved = { ...item, groupId: targetGroupId || null };
+      const safeIndex = Math.max(0, Math.min(targetIndex, destItems.length));
+      destItems.splice(safeIndex, 0, moved);
+      destItems.forEach((it, idx) => { it.order = idx; });
+
+      const sourceItems = remaining
+        .filter(i => (i.groupId || null) === sourceGroupId)
+        .sort((a, b) => a.order - b.order);
+      sourceItems.forEach((it, idx) => { it.order = idx; });
+
+      const otherItems = remaining.filter(i => (i.groupId || null) !== sourceGroupId && (i.groupId || null) !== (targetGroupId || null));
+      const rebuilt = [...otherItems, ...sourceItems, ...destItems].map((x, idx) => x);
+
+      // Rebuild state without duplicates
+      const map = new Map();
+      [...remaining, ...destItems].forEach(i => map.set(i.id, i));
+      state.items = Array.from(map.values());
+      normalizeItemOrders(null);
+      state.groups.forEach(g => normalizeItemOrders(g.id));
       saveNow();
-      showToast("Order updated");
     }
 
-    function createItemNode(item) {
+    function moveItemBeforeTarget(itemId, targetItemId) {
+      const target = state.items.find(i => i.id === targetItemId);
+      if (!target) return;
+      const targetGroupId = target.groupId || null;
+      const targetItems = getOrderedItemsByGroup(targetGroupId).filter(i => i.id !== itemId);
+      const moving = state.items.find(i => i.id === itemId);
+      if (!moving) return;
+      moving.groupId = targetGroupId;
+      const targetIndex = targetItems.findIndex(i => i.id === targetItemId);
+      targetItems.splice(Math.max(0, targetIndex), 0, moving);
+      targetItems.forEach((it, idx) => { it.order = idx; });
+      state.items = state.items.map(i => i.id === moving.id ? moving : i);
+      normalizeItemOrders(null);
+      state.groups.forEach(g => normalizeItemOrders(g.id));
+      saveNow();
+    }
+
+    function moveItemAfterTarget(itemId, targetItemId) {
+      const target = state.items.find(i => i.id === targetItemId);
+      if (!target) return;
+      const targetGroupId = target.groupId || null;
+      const targetItems = getOrderedItemsByGroup(targetGroupId).filter(i => i.id !== itemId);
+      const moving = state.items.find(i => i.id === itemId);
+      if (!moving) return;
+      moving.groupId = targetGroupId;
+      const targetIndex = targetItems.findIndex(i => i.id === targetItemId);
+      targetItems.splice(Math.max(0, targetIndex + 1), 0, moving);
+      targetItems.forEach((it, idx) => { it.order = idx; });
+      state.items = state.items.map(i => i.id === moving.id ? moving : i);
+      normalizeItemOrders(null);
+      state.groups.forEach(g => normalizeItemOrders(g.id));
+      saveNow();
+    }
+
+    function moveItemToGroupTop(itemId, groupId) {
+      const moving = state.items.find(i => i.id === itemId);
+      if (!moving) return;
+      moving.groupId = groupId;
+      const targetItems = getOrderedItemsByGroup(groupId).filter(i => i.id !== itemId);
+      targetItems.unshift(moving);
+      targetItems.forEach((it, idx) => { it.order = idx; });
+      normalizeItemOrders(null);
+      state.groups.forEach(g => normalizeItemOrders(g.id));
+      saveNow();
+    }
+
+    function moveItemToUngroupedTop(itemId) {
+      const moving = state.items.find(i => i.id === itemId);
+      if (!moving) return;
+      moving.groupId = null;
+      const targetItems = getOrderedItemsByGroup(null).filter(i => i.id !== itemId);
+      targetItems.unshift(moving);
+      targetItems.forEach((it, idx) => { it.order = idx; });
+      normalizeItemOrders(null);
+      state.groups.forEach(g => normalizeItemOrders(g.id));
+      saveNow();
+    }
+
+    function findDropContext(x, y) {
+      const el = document.elementFromPoint(x, y);
+      if (!el) return null;
+      const item = el.closest?.('.item[data-item-id]');
+      if (item) {
+        return { type: 'item', id: item.dataset.itemId, el: item };
+      }
+      const zone = el.closest?.('.drop-zone[data-group-id]');
+      if (zone) {
+        return { type: 'groupZone', groupId: zone.dataset.groupId || null, el: zone };
+      }
+      const shell = el.closest?.('.ungrouped-shell');
+      if (shell) return { type: 'ungrouped', groupId: null, el: shell };
+      return null;
+    }
+
+    function renderItem(item) {
       const li = document.createElement("li");
       li.className = "item" + (item.checked ? " done" : "");
-      li.dataset.id = item.id;
+      li.dataset.itemId = item.id;
       li.innerHTML = `
         <div class="check-wrap">
           <input type="checkbox" class="check" data-action="toggle" data-id="${item.id}" ${item.checked ? "checked" : ""} />
         </div>
         <div class="text">${escapeHtml(item.text)}</div>
-        <div class="actions">
-          <div class="drag-handle" draggable="true" data-action="drag" data-id="${item.id}" title="Drag">≡</div>
-        </div>
+        <div class="drag-handle" data-action="drag" data-id="${item.id}" title="Drag">≡</div>
       `;
       return li;
     }
 
-    function render() {
-      const scrollY = window.scrollY;
-      const root = document.createElement("div");
+    function renderSectionForItems(title, items, opts = {}) {
+      const shell = document.createElement("div");
+      shell.className = opts.groupId ? "group-shell" : "ungrouped-shell";
 
-      if (!state.groupDone) {
-        const list = document.createElement("ul");
-        list.className = "list";
-        for (const item of visibleItems()) list.appendChild(createItemNode(item));
-        root.appendChild(list);
-      } else {
-        const ordered = sortByOrder(state.items);
-        const todo = ordered.filter(i => !i.checked);
-        const done = ordered.filter(i => i.checked);
+      if (opts.title) {
+        const head = document.createElement("div");
+        head.className = "section-head";
+        head.innerHTML = `
+          <h2 class="section-title">${escapeHtml(opts.title)}</h2>
+          <div class="group-actions">${opts.controlsHtml || ""}</div>
+        `;
+        shell.appendChild(head);
+      }
 
-        const todoList = document.createElement("ul");
-        todoList.className = "list";
-        for (const item of todo) todoList.appendChild(createItemNode(item));
-        root.appendChild(todoList);
+      const zone = document.createElement("div");
+      zone.className = "drop-zone";
+      zone.dataset.groupId = opts.groupId || "";
 
+      const list = document.createElement("ul");
+      list.className = "list";
+      list.dataset.sectionGroupId = opts.groupId || "";
+      items.forEach(item => list.appendChild(renderItem(item)));
+      zone.appendChild(list);
+
+      if (state.groupDone) {
+        const done = items.filter(i => i.checked);
         if (done.length) {
-          const heading = document.createElement("div");
-          heading.className = "section-title";
-          heading.textContent = "Done";
-          root.appendChild(heading);
-
+          const doneTitle = document.createElement("div");
+          doneTitle.className = "done-title";
+          doneTitle.textContent = "Done";
+          zone.appendChild(doneTitle);
           const doneList = document.createElement("ul");
           doneList.className = "list";
-          for (const item of done) doneList.appendChild(createItemNode(item));
-          root.appendChild(doneList);
+          done.forEach(item => doneList.appendChild(renderItem(item)));
+          zone.appendChild(doneList);
         }
       }
+
+      shell.appendChild(zone);
+      return shell;
+    }
+
+    function render() {
+      const scrollY = window.scrollY;
+      const root = document.createDocumentFragment();
+      const groups = getOrderedGroups();
+      const ungrouped = getOrderedItemsByGroup(null);
+      const ungroupedVisible = state.groupDone ? ungrouped.filter(i => !i.checked) : ungrouped;
+
+      // Ungrouped first
+      const ungroupedShell = document.createElement("div");
+      ungroupedShell.className = "ungrouped-shell";
+      const ungroupedHead = document.createElement("div");
+      ungroupedHead.className = "section-head";
+      ungroupedHead.innerHTML = `
+        <h2 class="section-title">List</h2>
+        <div class="group-actions"></div>
+      `;
+      ungroupedShell.appendChild(ungroupedHead);
+
+      const ungroupedZone = document.createElement("div");
+      ungroupedZone.className = "drop-zone";
+      ungroupedZone.dataset.groupId = "";
+      const ungroupedList = document.createElement("ul");
+      ungroupedList.className = "list";
+      ungroupedVisible.forEach(item => ungroupedList.appendChild(renderItem(item)));
+      ungroupedZone.appendChild(ungroupedList);
+
+      if (state.groupDone) {
+        const doneUngrouped = ungrouped.filter(i => i.checked);
+        if (doneUngrouped.length) {
+          const doneTitle = document.createElement("div");
+          doneTitle.className = "done-title";
+          doneTitle.textContent = "Done";
+          ungroupedZone.appendChild(doneTitle);
+          const doneList = document.createElement("ul");
+          doneList.className = "list";
+          doneUngrouped.forEach(item => doneList.appendChild(renderItem(item)));
+          ungroupedZone.appendChild(doneList);
+        }
+      }
+
+      ungroupedShell.appendChild(ungroupedZone);
+      root.appendChild(ungroupedShell);
+
+      // Groups
+      groups.forEach(group => {
+        const items = getOrderedItemsByGroup(group.id);
+        const visible = state.groupDone ? items.filter(i => !i.checked) : items;
+        const shell = document.createElement("div");
+        shell.className = "group-shell";
+        shell.dataset.groupId = group.id;
+
+        const head = document.createElement("div");
+        head.className = "section-head";
+        head.innerHTML = `
+          <h2 class="section-title">${escapeHtml(group.name)}</h2>
+          <div class="group-actions">
+            <button class="small-btn" data-action="delete-group" data-group-id="${group.id}">Delete</button>
+          </div>
+        `;
+        shell.appendChild(head);
+
+        const zone = document.createElement("div");
+        zone.className = "drop-zone";
+        zone.dataset.groupId = group.id;
+        const list = document.createElement("ul");
+        list.className = "list";
+        visible.forEach(item => list.appendChild(renderItem(item)));
+        zone.appendChild(list);
+
+        if (state.groupDone) {
+          const done = items.filter(i => i.checked);
+          if (done.length) {
+            const doneTitle = document.createElement("div");
+            doneTitle.className = "done-title";
+            doneTitle.textContent = "Done";
+            zone.appendChild(doneTitle);
+            const doneList = document.createElement("ul");
+            doneList.className = "list";
+            done.forEach(item => doneList.appendChild(renderItem(item)));
+            zone.appendChild(doneList);
+          }
+        }
+
+        shell.appendChild(zone);
+        root.appendChild(shell);
+      });
 
       contentRoot.replaceChildren(root);
       requestAnimationFrame(() => window.scrollTo({ top: scrollY, left: 0, behavior: "auto" }));
     }
 
-    function getItemFromEventTarget(target) {
-      return target && target.closest ? target.closest(".item") : null;
+    function handleItemDrop(sourceId, clientX, clientY) {
+      const target = findDropContext(clientX, clientY);
+      if (!target) {
+        moveItemToUngroupedTop(sourceId);
+        return;
+      }
+
+      if (target.type === 'item') {
+        const targetEl = target.el;
+        const rect = targetEl.getBoundingClientRect();
+        const before = clientY < rect.top + rect.height / 2;
+        if (target.id === sourceId) return;
+        if (before) moveItemBeforeTarget(sourceId, target.id);
+        else moveItemAfterTarget(sourceId, target.id);
+        return;
+      }
+
+      if (target.type === 'groupZone') {
+        moveItemToGroupTop(sourceId, target.groupId || null);
+        return;
+      }
+
+      if (target.type === 'ungrouped') {
+        moveItemToUngroupedTop(sourceId);
+      }
     }
 
     document.addEventListener("change", (e) => {
-      const target = e.target;
-      if (target.matches('input[type="checkbox"][data-action="toggle"]')) {
-        toggleItem(target.dataset.id, target.checked);
+      const t = e.target;
+      if (t.matches('input[type="checkbox"][data-action="toggle"]')) {
+        toggleItem(t.dataset.id, t.checked);
       }
     });
 
-    document.addEventListener("dragstart", (e) => {
-      const handle = e.target.closest('.drag-handle[data-action="drag"]');
-      if (!handle) return;
-      state.dragId = handle.dataset.id;
-      e.dataTransfer.effectAllowed = "move";
-      e.dataTransfer.setData("text/plain", state.dragId);
-    });
-
-    document.addEventListener("dragover", (e) => {
-      if (!state.dragId) return;
-      const item = getItemFromEventTarget(e.target);
-      if (!item) return;
-      e.preventDefault();
-    });
-
-    document.addEventListener("drop", (e) => {
-      if (!state.dragId) return;
-      const item = getItemFromEventTarget(e.target);
-      if (!item) return;
-      e.preventDefault();
-      const fromId = state.dragId || e.dataTransfer.getData("text/plain");
-      const toId = item.dataset.id;
-      if (fromId && toId) reorderByVisibleOrder(fromId, toId);
-      state.dragId = null;
+    document.addEventListener("click", (e) => {
+      const action = e.target.closest("[data-action]");
+      if (!action) return;
+      const kind = action.dataset.action;
+      if (kind === "delete-group") {
+        deleteGroup(action.dataset.groupId);
+      }
     });
 
     document.addEventListener("pointerdown", (e) => {
-      const item = getItemFromEventTarget(e.target);
+      const handle = e.target.closest('.drag-handle[data-action="drag"]');
+      if (!handle) return;
+      const itemId = handle.dataset.id;
+      const item = state.items.find(i => i.id === itemId);
       if (!item) return;
-      if (e.target.closest(".drag-handle") || e.target.closest(".check")) return;
-
-      state.swipeItem = {
-        id: item.dataset.id,
-        el: item,
+      const itemEl = handle.closest('.item');
+      if (!itemEl) return;
+      state.drag = {
+        id: itemId,
+        pointerId: e.pointerId,
         startX: e.clientX,
+        startY: e.clientY,
         currentX: e.clientX,
+        currentY: e.clientY,
+        el: itemEl,
         active: true
       };
-      item.classList.add("swiping");
-      try { item.setPointerCapture(e.pointerId); } catch (_) {}
+      itemEl.classList.add("dragging");
+      try { handle.setPointerCapture(e.pointerId); } catch (_) {}
     });
 
     document.addEventListener("pointermove", (e) => {
-      if (!state.swipeItem || !state.swipeItem.active) return;
-      state.swipeItem.currentX = e.clientX;
-      const dx = state.swipeItem.currentX - state.swipeItem.startX;
-      state.swipeItem.el.style.transform = `translateX(${dx}px)`;
-      state.swipeItem.el.style.opacity = String(Math.max(0.35, 1 - Math.abs(dx) / 240));
+      if (!state.drag || !state.drag.active || e.pointerId !== state.drag.pointerId) return;
+      state.drag.currentX = e.clientX;
+      state.drag.currentY = e.clientY;
     });
 
-    function finishSwipe() {
-      if (!state.swipeItem) return;
-      const { el, startX, currentX, id } = state.swipeItem;
-      const dx = currentX - startX;
-      el.classList.remove("swiping");
-      if (Math.abs(dx) > 90) {
-        el.classList.add("deleting");
-        state.swipeItem = null;
-        setTimeout(() => deleteItem(id), 110);
-        return;
-      }
-      el.style.transform = "";
-      el.style.opacity = "";
-      state.swipeItem = null;
+    function endDrag(e) {
+      if (!state.drag || e.pointerId !== state.drag.pointerId) return;
+      const { id, el, currentX, currentY } = state.drag;
+      el.classList.remove("dragging");
+      handleItemDrop(id, currentX, currentY);
+      state.drag = null;
+      clearDropHighlights();
     }
 
-    document.addEventListener("pointerup", finishSwipe);
-    document.addEventListener("pointercancel", finishSwipe);
-    document.addEventListener("pointerleave", () => {
-      if (state.swipeItem) finishSwipe();
+    document.addEventListener("pointerup", endDrag);
+    document.addEventListener("pointercancel", endDrag);
+
+    function clearDropHighlights() {
+      document.querySelectorAll(".drop-active").forEach(el => el.classList.remove("drop-active"));
+    }
+
+    document.addEventListener("pointermove", (e) => {
+      if (!state.drag) return;
+      clearDropHighlights();
+      const target = findDropContext(e.clientX, e.clientY);
+      if (target && target.el) target.el.classList.add("drop-active");
     });
 
     addBtn.addEventListener("click", () => {
@@ -859,10 +1114,7 @@
       inputEl.focus({ preventScroll: true });
     });
 
-    inputEl.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") addBtn.click();
-    });
-
+    groupBtn.addEventListener("click", addGroup);
     clearBtn.addEventListener("click", clearChecks);
 
     groupDoneEl.addEventListener("change", () => {
@@ -878,20 +1130,24 @@
     });
 
     sizeSlider.addEventListener("input", () => {
-      const size = Number(sizeSlider.value);
-      state.tileSize = size;
-      setTileSize(size);
-      showToast(`Size ${size}%`);
+      setTileSize(Number(sizeSlider.value));
     });
 
     async function init() {
-      const remoteLoaded = await loadRemote();
-      if (!remoteLoaded) loadLocal();
-      state.items = normalizeOrders(state.items);
+      const localLoaded = loadLocal();
+      if (!localLoaded) {
+        state.items = [];
+        state.groups = [];
+      }
       render();
+      if (navigator.onLine !== false) {
+        const remoteLoaded = await loadRemote();
+        if (remoteLoaded) render();
+      }
     }
 
     window.addEventListener("beforeunload", persistLocal);
+    window.addEventListener("online", () => loadRemote().then(ok => { if (ok) render(); }));
     init();
   </script>
 </body>
