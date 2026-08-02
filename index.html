@@ -6,26 +6,67 @@
   <title>Shopping List</title>
   <style>
     :root {
-      --bg0: #050a11;
-      --bg1: #08101a;
-      --glass: rgba(17, 23, 34, 0.58);
-      --glass2: rgba(255, 255, 255, 0.06);
-      --text: #e9eef7;
-      --muted: #a0aec3;
-      --line: rgba(255, 255, 255, 0.10);
-      --accent: #68e8ff;
-      --accent2: #9b7bff;
-      --success: #35d07f;
-      --shadow: 0 16px 40px rgba(0, 0, 0, 0.26);
-      --radius-xl: 26px;
-      --radius-lg: 18px;
-      --radius-md: 14px;
       --font-scale: 1;
       --tile-scale: 1;
       --panel-h: 92px;
+      --radius-xl: 26px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --shadow: 0 16px 40px rgba(0,0,0,.26);
+      --glass-blur: blur(18px) saturate(170%);
+      --accent: #68e8ff;
+      --accent2: #9b7bff;
+      --success: #35d07f;
+      --danger: #ff6d7d;
+      --line: rgba(255,255,255,.10);
+      --surface: rgba(17, 23, 34, .58);
+      --surface-2: rgba(255,255,255,.05);
+      --text: #e9eef7;
+      --muted: #a0aec3;
+      --bg0: #050a11;
+      --bg1: #08101a;
+      --grid: rgba(255,255,255,.03);
+      --panel-border: rgba(255,255,255,.10);
+      --item-bg: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      --item-bg-hover: rgba(104,232,255,.06);
+      --panel-grad: linear-gradient(180deg, rgba(21,29,43,.76), rgba(13,18,28,.58));
+      --shell-grad: linear-gradient(180deg, rgba(21,29,43,.48), rgba(11,17,27,.36));
+      --btn-text-dark: #03121a;
+      --btn-text-warm: #1a0f05;
+      --chip-bg: rgba(8,12,18,.72);
+      --switch-off: rgba(255,255,255,.12);
+      --switch-knob: #e5edf8;
+      --done-chip: rgba(53,208,127,.18);
     }
 
-    [data-font="small"] { --font-scale: 0.94; }
+    body[data-theme="dark"] {
+      color-scheme: dark;
+    }
+
+    body[data-theme="light"] {
+      color-scheme: light;
+      --bg0: #eef4fb;
+      --bg1: #dfeaf6;
+      --surface: rgba(255,255,255,.62);
+      --surface-2: rgba(255,255,255,.50);
+      --text: #102235;
+      --muted: #51627a;
+      --line: rgba(16,34,53,.12);
+      --grid: rgba(16,34,53,.05);
+      --panel-border: rgba(16,34,53,.10);
+      --item-bg: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.72));
+      --item-bg-hover: rgba(104,232,255,.10);
+      --panel-grad: linear-gradient(180deg, rgba(255,255,255,.76), rgba(242,248,255,.60));
+      --shell-grad: linear-gradient(180deg, rgba(255,255,255,.55), rgba(243,248,255,.42));
+      --chip-bg: rgba(255,255,255,.72);
+      --switch-off: rgba(16,34,53,.14);
+      --switch-knob: #ffffff;
+      --done-chip: rgba(53,208,127,.22);
+      --btn-text-dark: #082132;
+      --btn-text-warm: #2c1805;
+    }
+
+    [data-font="small"] { --font-scale: .94; }
     [data-font="medium"] { --font-scale: 1; }
     [data-font="large"] { --font-scale: 1.12; }
     [data-font="xl"] { --font-scale: 1.24; }
@@ -40,10 +81,10 @@
       font-size: calc(15px * var(--font-scale));
       color: var(--text);
       background:
-        radial-gradient(circle at 10% 10%, rgba(104, 232, 255, 0.14), transparent 20%),
-        radial-gradient(circle at 90% 8%, rgba(155, 123, 255, 0.12), transparent 20%),
-        radial-gradient(circle at 50% 100%, rgba(53, 208, 127, 0.08), transparent 18%),
-        linear-gradient(180deg, var(--bg1) 0%, var(--bg0) 100%);
+        radial-gradient(circle at 10% 10%, rgba(104,232,255,.15), transparent 18%),
+        radial-gradient(circle at 90% 8%, rgba(155,123,255,.13), transparent 18%),
+        radial-gradient(circle at 50% 100%, rgba(53,208,127,.08), transparent 18%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
       overflow-x: hidden;
       overflow-anchor: none;
     }
@@ -54,11 +95,11 @@
       inset: 0;
       pointer-events: none;
       background:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
       background-size: 54px 54px;
-      opacity: 0.08;
-      mask-image: linear-gradient(180deg, rgba(0,0,0,0.35), transparent 85%);
+      opacity: .95;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,.35), transparent 86%);
     }
 
     .app {
@@ -73,7 +114,7 @@
       position: sticky;
       top: 10px;
       z-index: 20;
-      transition: transform 0.24s ease, opacity 0.24s ease;
+      transition: transform .24s ease, opacity .24s ease;
       will-change: transform, opacity;
     }
     .panel-wrap.hidden {
@@ -83,12 +124,12 @@
     }
 
     .panel {
-      background: linear-gradient(180deg, rgba(21, 29, 43, 0.76), rgba(13, 18, 28, 0.58));
-      border: 1px solid rgba(255,255,255,0.10);
+      background: var(--panel-grad);
+      border: 1px solid var(--panel-border);
       border-radius: var(--radius-xl);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(18px) saturate(160%);
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       padding: 12px;
       overflow: hidden;
     }
@@ -106,17 +147,17 @@
     }
     .toolbar::-webkit-scrollbar { display: none; }
 
-    .chip,
     .input,
     .select,
     .toggle,
-    .range-wrap {
+    .range-wrap,
+    .chip {
       flex: 0 0 auto;
       border: 1px solid var(--line);
-      background: rgba(8, 12, 18, 0.72);
+      background: var(--chip-bg);
       color: var(--text);
       border-radius: var(--radius-md);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
       min-height: 42px;
     }
 
@@ -124,36 +165,35 @@
     .select {
       padding: 10px 12px;
       outline: none;
-      font-size: 0.95em;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      font-size: .95em;
+      transition: border-color .15s ease, box-shadow .15s ease;
       min-width: 150px;
     }
     .input { width: 220px; }
     .input:focus,
     .select:focus {
-      border-color: rgba(104, 232, 255, 0.60);
-      box-shadow: 0 0 0 3px rgba(104, 232, 255, 0.10);
+      border-color: rgba(104,232,255,.60);
+      box-shadow: 0 0 0 3px rgba(104,232,255,.10);
     }
 
-    .chip,
-    .btn {
+    .chip {
       border: none;
       cursor: pointer;
       user-select: none;
       padding: 10px 12px;
       font-weight: 700;
-      font-size: 0.88em;
+      font-size: .88em;
       white-space: nowrap;
-      transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
+      transition: transform .15s ease, filter .15s ease, opacity .15s ease;
     }
-    .chip:hover,
-    .btn:hover { transform: translateY(-1px); }
-    .chip:active,
-    .btn:active { transform: translateY(1px); }
+    .chip:hover { transform: translateY(-1px); }
+    .chip:active { transform: translateY(1px); }
 
-    .btn-add { background: linear-gradient(135deg, var(--accent), #b9f1ff); color: #03121a; }
+    .btn-add { background: linear-gradient(135deg, var(--accent), #b9f1ff); color: var(--btn-text-dark); }
     .btn-group { background: linear-gradient(135deg, #d2b7ff, #a78bfa); color: #100817; }
-    .btn-clear { background: linear-gradient(135deg, #ffd166, #ff956b); color: #1a0f05; }
+    .btn-clear { background: linear-gradient(135deg, #ffd166, #ff956b); color: var(--btn-text-warm); }
+    .btn-theme { background: linear-gradient(135deg, rgba(255,255,255,.55), rgba(255,255,255,.34)); color: var(--btn-text-dark); }
+    body[data-theme="dark"] .btn-theme { background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.06)); color: var(--text); }
 
     .toggle {
       display: flex;
@@ -165,17 +205,17 @@
       cursor: pointer;
       user-select: none;
     }
-    .toggle span { font-size: 0.88em; line-height: 1.1; }
+    .toggle span { font-size: .88em; line-height: 1.1; }
     .toggle input { display: none; }
     .switch {
       width: 42px;
       height: 24px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--switch-off);
+      border: 1px solid rgba(255,255,255,.08);
       position: relative;
       flex: 0 0 auto;
-      transition: 0.18s ease;
+      transition: .18s ease;
     }
     .switch::after {
       content: "";
@@ -185,12 +225,13 @@
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      background: #e5edf8;
-      transition: 0.18s ease;
+      background: var(--switch-knob);
+      transition: .18s ease;
+      box-shadow: 0 8px 18px rgba(0,0,0,.15);
     }
     .toggle input:checked + .switch {
-      background: rgba(53,208,127,0.18);
-      border-color: rgba(53,208,127,0.28);
+      background: var(--done-chip);
+      border-color: rgba(53,208,127,.28);
     }
     .toggle input:checked + .switch::after { left: 22px; background: #7ef0a8; }
 
@@ -205,7 +246,7 @@
       justify-content: space-between;
       gap: 10px;
       color: var(--muted);
-      font-size: 0.84em;
+      font-size: .84em;
       user-select: none;
     }
     .range {
@@ -221,13 +262,13 @@
     }
 
     .shell {
-      background: linear-gradient(180deg, rgba(21, 29, 43, 0.48), rgba(11, 17, 27, 0.36));
-      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--shell-grad);
+      border: 1px solid var(--panel-border);
       border-radius: 22px;
       box-shadow: var(--shadow);
       overflow: hidden;
-      backdrop-filter: blur(16px) saturate(155%);
-      -webkit-backdrop-filter: blur(16px) saturate(155%);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
     }
 
     .section-head {
@@ -236,15 +277,15 @@
       justify-content: space-between;
       gap: 10px;
       padding: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.03);
     }
 
     .section-title {
       margin: 0;
-      font-size: 0.92em;
-      letter-spacing: 0.03em;
-      color: rgba(233, 238, 247, 0.82);
+      font-size: .92em;
+      letter-spacing: .03em;
+      color: rgba(233,238,247,.82);
       text-transform: uppercase;
       user-select: none;
     }
@@ -257,20 +298,18 @@
     }
 
     .small-btn {
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
       color: var(--text);
       border-radius: 11px;
       padding: 8px 10px;
-      font-size: 0.80em;
+      font-size: .80em;
       font-weight: 700;
       cursor: pointer;
       user-select: none;
     }
 
-    .drop-zone {
-      padding: 12px;
-    }
+    .drop-zone { padding: 12px; }
 
     .list {
       margin: 0;
@@ -284,9 +323,9 @@
     .done-title {
       margin: 10px 0 8px;
       padding: 0 12px;
-      color: rgba(233,238,247,0.72);
-      font-size: 0.85em;
-      letter-spacing: 0.04em;
+      color: rgba(233,238,247,.72);
+      font-size: .85em;
+      letter-spacing: .04em;
       text-transform: uppercase;
       user-select: none;
     }
@@ -298,25 +337,25 @@
       align-items: center;
       padding: calc(12px * var(--tile-scale)) 12px;
       min-height: calc(56px * var(--tile-scale));
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--item-bg);
+      border: 1px solid var(--panel-border);
       border-radius: 18px;
       overflow: hidden;
-      touch-action: pan-y;
+      touch-action: none;
       will-change: transform, opacity;
       position: relative;
     }
+    .item:hover { background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05)); }
+    body[data-theme="light"] .item:hover { background: var(--item-bg-hover); }
 
-    .item.dragging {
-      opacity: 0.62;
-      transform: scale(0.985);
-    }
+    .item.dragging { opacity: .62; transform: scale(.985); }
 
     .item.done .text {
-      color: rgba(233, 238, 247, 0.58);
+      color: rgba(233,238,247,.58);
       text-decoration: line-through;
       text-decoration-thickness: 2px;
     }
+    body[data-theme="light"] .item.done .text { color: rgba(16,34,53,.46); }
 
     .check-wrap {
       width: 22px;
@@ -330,14 +369,15 @@
       width: 22px;
       height: 22px;
       border-radius: 7px;
-      border: 2px solid rgba(120, 139, 166, 0.96);
-      background: rgba(7, 10, 15, 0.84);
+      border: 2px solid rgba(120,139,166,.96);
+      background: rgba(7,10,15,.84);
       display: grid;
       place-items: center;
       cursor: pointer;
       margin: 0;
-      transition: 0.15s ease;
+      transition: .15s ease;
     }
+    body[data-theme="light"] .check { background: rgba(255,255,255,.85); border-color: rgba(16,34,53,.22); }
     .check::after {
       content: "";
       width: 10px;
@@ -347,9 +387,9 @@
       transform: rotate(-45deg) translateY(-1px);
     }
     .check:checked {
-      border-color: rgba(53,208,127,0.95);
-      background: rgba(53,208,127,0.16);
-      box-shadow: 0 0 0 4px rgba(53,208,127,0.08);
+      border-color: rgba(53,208,127,.95);
+      background: rgba(53,208,127,.16);
+      box-shadow: 0 0 0 4px rgba(53,208,127,.08);
     }
     .check:checked::after {
       border-left-color: var(--success);
@@ -370,8 +410,8 @@
       place-items: center;
       border-radius: 12px;
       user-select: none;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
       color: #d6ddea;
       cursor: grab;
       font-size: 18px;
@@ -379,12 +419,13 @@
       touch-action: none;
       flex: 0 0 auto;
     }
+    body[data-theme="light"] .drag-handle { color: #334; background: rgba(255,255,255,.65); }
     .drag-handle:active { cursor: grabbing; }
 
     .drop-active {
-      outline: 1px dashed rgba(104,232,255,0.50);
+      outline: 1px dashed rgba(104,232,255,.50);
       outline-offset: 2px;
-      background: rgba(104,232,255,0.06);
+      background: rgba(104,232,255,.06);
     }
 
     .toast-stack {
@@ -401,8 +442,8 @@
 
     .toast {
       pointer-events: auto;
-      background: linear-gradient(180deg, rgba(20,28,42,0.90), rgba(12,18,28,0.88));
-      border: 1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, rgba(20,28,42,.90), rgba(12,18,28,.88));
+      border: 1px solid rgba(255,255,255,.10);
       color: var(--text);
       border-radius: 999px;
       padding: 11px 14px;
@@ -416,9 +457,14 @@
       text-overflow: ellipsis;
       transform: translateX(0);
       opacity: 1;
-      transition: transform 0.18s ease, opacity 0.18s ease;
+      transition: transform .18s ease, opacity .18s ease;
       touch-action: pan-y;
       user-select: none;
+    }
+    body[data-theme="light"] .toast {
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(244,248,252,.88));
+      color: #102235;
+      border-color: rgba(16,34,53,.10);
     }
     .toast.swiping { transition: none; }
     .toast.fade-out { opacity: 0; transform: translateX(-18px); }
@@ -428,11 +474,7 @@
       border-radius: 50%;
       flex: 0 0 auto;
       background: var(--accent);
-      box-shadow: 0 0 0 6px rgba(104,232,255,0.10);
-    }
-
-    .spacer {
-      height: 8px;
+      box-shadow: 0 0 0 6px rgba(104,232,255,.10);
     }
 
     @media (max-width: 860px) {
@@ -448,10 +490,11 @@
       .toast-stack { left: 12px; bottom: 12px; right: 12px; max-width: calc(100vw - 24px); }
       .item { grid-template-columns: auto minmax(0, 1fr) auto; }
       .drag-handle { width: 34px; height: 34px; }
+      .small-btn { padding: 8px 9px; }
     }
   </style>
 </head>
-<body data-font="medium">
+<body data-font="medium" data-theme="dark">
   <div class="app">
     <div id="panelWrap" class="panel-wrap">
       <div class="panel">
@@ -460,6 +503,7 @@
           <button id="addBtn" class="chip btn-add" type="button">Add</button>
           <button id="groupBtn" class="chip btn-group" type="button">+ Group</button>
           <button id="clearBtn" class="chip btn-clear" type="button">Clear Checks</button>
+          <button id="themeBtn" class="chip btn-theme" type="button">Theme: Dark</button>
           <label class="toggle" title="When on, all items are shown as just Active and Done">
             <span>Group Done</span>
             <input id="groupDone" type="checkbox" />
@@ -485,7 +529,7 @@
   <div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="false"></div>
 
   <script>
-    const STORAGE_KEY = "shopping_list_state_v7";
+    const STORAGE_KEY = "shopping_list_state_v8";
     const API_BASE_URL = (() => {
       const saved = localStorage.getItem("shopping_api_base");
       if (saved) return saved.replace(/\/$/, "");
@@ -499,10 +543,12 @@
       items: [],
       groups: [],
       drag: null,
+      swipe: null,
       syncTimer: null,
       fontSize: localStorage.getItem("shopping_font_size") || "medium",
       tileSize: Number(localStorage.getItem("shopping_tile_size") || 100),
       groupDone: localStorage.getItem("shopping_group_done") === "true",
+      theme: localStorage.getItem("shopping_theme") || "dark",
     };
 
     const panelWrap = document.getElementById("panelWrap");
@@ -511,6 +557,7 @@
     const addBtn = document.getElementById("addBtn");
     const groupBtn = document.getElementById("groupBtn");
     const clearBtn = document.getElementById("clearBtn");
+    const themeBtn = document.getElementById("themeBtn");
     const groupDoneEl = document.getElementById("groupDone");
     const fontSelectEl = document.getElementById("fontSelect");
     const sizeSlider = document.getElementById("sizeSlider");
@@ -518,11 +565,13 @@
     const toastStack = document.getElementById("toastStack");
 
     document.body.dataset.font = state.fontSize;
+    document.body.dataset.theme = state.theme;
     groupDoneEl.checked = state.groupDone;
     fontSelectEl.value = state.fontSize;
     sizeSlider.value = String(state.tileSize);
     document.documentElement.style.setProperty("--tile-scale", String(state.tileSize / 100));
     sizeLabel.textContent = `${state.tileSize}%`;
+    themeBtn.textContent = `Theme: ${state.theme === "dark" ? "Dark" : "Light"}`;
 
     function uid() {
       return crypto?.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()).replace(".", "");
@@ -604,6 +653,14 @@
       sizeLabel.textContent = `${size}%`;
     }
 
+    function setTheme(theme) {
+      state.theme = theme;
+      document.body.dataset.theme = theme;
+      localStorage.setItem("shopping_theme", theme);
+      themeBtn.textContent = `Theme: ${theme === "dark" ? "Dark" : "Light"}`;
+      showToast(`${theme === "dark" ? "Dark" : "Light"} theme on`);
+    }
+
     function normalizeGroupOrders() {
       [...state.groups].sort((a, b) => a.order - b.order).forEach((g, i) => g.order = i);
     }
@@ -611,13 +668,6 @@
     function normalizeItemsByGroup(groupId) {
       const arr = state.items.filter(i => (i.groupId || null) === (groupId || null)).sort((a, b) => a.order - b.order);
       arr.forEach((i, idx) => i.order = idx);
-    }
-
-    function sortItems() {
-      return [...state.items].sort((a, b) => {
-        if (a.groupId !== b.groupId) return String(a.groupId || "").localeCompare(String(b.groupId || ""));
-        return a.order - b.order;
-      });
     }
 
     function getOrderedGroups() {
@@ -704,7 +754,7 @@
 
     function queueRemoteSave() {
       clearTimeout(state.syncTimer);
-      state.syncTimer = setTimeout(syncRemote, 200);
+      state.syncTimer = setTimeout(syncRemote, 180);
     }
 
     async function syncRemote() {
@@ -858,10 +908,7 @@
       shell.className = "shell";
       const head = document.createElement("div");
       head.className = "section-head";
-      head.innerHTML = `
-        <h2 class="section-title">${escapeHtml(title)}</h2>
-        <div class="group-actions"></div>
-      `;
+      head.innerHTML = `<h2 class="section-title">${escapeHtml(title)}</h2><div class="group-actions"></div>`;
       if (showGroupDelete && groupId) {
         const btn = document.createElement("button");
         btn.className = "small-btn";
@@ -872,7 +919,6 @@
         head.querySelector(".group-actions").appendChild(btn);
       }
       shell.appendChild(head);
-
       const zone = document.createElement("div");
       zone.className = "drop-zone";
       zone.dataset.groupId = groupId || "";
@@ -911,12 +957,8 @@
           root.appendChild(doneShell);
         }
       } else {
-        const ungrouped = getItemsByGroup(null);
-        root.appendChild(buildListSection("List", ungrouped, null, false));
-        getOrderedGroups().forEach(group => {
-          const items = getItemsByGroup(group.id);
-          root.appendChild(buildListSection(group.name, items, group.id, true));
-        });
+        root.appendChild(buildListSection("List", getItemsByGroup(null), null, false));
+        getOrderedGroups().forEach(group => root.appendChild(buildListSection(group.name, getItemsByGroup(group.id), group.id, true)));
       }
 
       contentRoot.replaceChildren(root);
@@ -926,29 +968,22 @@
     function handleItemDrop(sourceId, x, y) {
       if (state.groupDone) {
         const target = findDropContext(x, y);
-        const moving = state.items.find(i => i.id === sourceId);
-        if (!moving) return;
         if (!target) return;
         if (target.type === 'item') {
-          const targetItem = state.items.find(i => i.id === target.id);
-          if (!targetItem) return;
           const rect = target.el.getBoundingClientRect();
           const before = y < rect.top + rect.height / 2;
-          moving.checked = targetItem.checked;
-          if (moving.checked) {
-            if (before) moveItemBeforeTarget(sourceId, target.id);
-            else moveItemAfterTarget(sourceId, target.id);
-          } else {
-            if (before) moveItemBeforeTarget(sourceId, target.id);
-            else moveItemAfterTarget(sourceId, target.id);
-          }
+          if (before) moveItemBeforeTarget(sourceId, target.id);
+          else moveItemAfterTarget(sourceId, target.id);
           return;
         }
         if (target.type === 'zone') {
-          const isDone = target.groupId === 'done-section';
-          moving.checked = isDone;
-          saveNow();
-          return;
+          if (target.groupId === 'done-section') {
+            const moving = state.items.find(i => i.id === sourceId);
+            if (moving) { moving.checked = true; saveNow(); }
+          } else {
+            const moving = state.items.find(i => i.id === sourceId);
+            if (moving) { moving.checked = false; saveNow(); }
+          }
         }
         return;
       }
@@ -961,31 +996,25 @@
       if (target.type === 'item') {
         const rect = target.el.getBoundingClientRect();
         const before = y < rect.top + rect.height / 2;
-        if (target.id === sourceId) return;
         if (before) moveItemBeforeTarget(sourceId, target.id);
         else moveItemAfterTarget(sourceId, target.id);
         return;
       }
-      if (target.type === 'zone') {
-        moveItemToGroupTop(sourceId, target.groupId || null);
-      }
+      if (target.type === 'zone') moveItemToGroupTop(sourceId, target.groupId || null);
     }
 
     document.addEventListener("change", (e) => {
       const t = e.target;
-      if (t.matches('input[type="checkbox"][data-action="toggle"]')) {
-        toggleItem(t.dataset.id, t.checked);
-      }
+      if (t.matches('input[type="checkbox"][data-action="toggle"]')) toggleItem(t.dataset.id, t.checked);
     });
 
     document.addEventListener("click", (e) => {
       const action = e.target.closest("[data-action]");
       if (!action) return;
-      if (action.dataset.action === "delete-group") {
-        deleteGroup(action.dataset.groupId);
-      }
+      if (action.dataset.action === "delete-group") deleteGroup(action.dataset.groupId);
     });
 
+    // Drag handle ordering
     document.addEventListener("pointerdown", (e) => {
       const handle = e.target.closest('.drag-handle[data-action="drag"]');
       if (!handle) return;
@@ -1017,6 +1046,7 @@
       state.drag = null;
       clearDropHighlights();
     });
+
     document.addEventListener("pointercancel", (e) => {
       if (!state.drag || e.pointerId !== state.drag.pointerId) return;
       state.drag.el.classList.remove("dragging");
@@ -1035,7 +1065,7 @@
       if (target?.el) target.el.classList.add("drop-active");
     });
 
-    // Swipe delete for list items
+    // Swipe delete (works on phone and desktop)
     document.addEventListener("pointerdown", (e) => {
       const item = e.target.closest(".item[data-item-id]");
       if (!item) return;
@@ -1062,13 +1092,13 @@
       const dx = state.swipe.currentX - state.swipe.startX;
       const dy = state.swipe.currentY - state.swipe.startY;
       if (!state.swipe.swiping) {
-        if (Math.abs(dx) > 16 && Math.abs(dx) > Math.abs(dy)) state.swipe.swiping = true;
+        if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) state.swipe.swiping = true;
         else return;
       }
       e.preventDefault();
       state.swipe.el.style.transform = `translateX(${dx}px)`;
-      state.swipe.el.style.opacity = String(Math.max(0.35, 1 - Math.abs(dx) / 240));
-    });
+      state.swipe.el.style.opacity = String(Math.max(.35, 1 - Math.abs(dx) / 240));
+    }, { passive: false });
 
     function finishSwipe(e) {
       if (!state.swipe || e.pointerId !== state.swipe.pointerId) return;
@@ -1101,9 +1131,9 @@
       inputEl.value = "";
       inputEl.focus({ preventScroll: true });
     });
-
     groupBtn.addEventListener("click", addGroup);
     clearBtn.addEventListener("click", clearChecks);
+    themeBtn.addEventListener("click", () => setTheme(state.theme === "dark" ? "light" : "dark"));
 
     groupDoneEl.addEventListener("change", () => {
       state.groupDone = groupDoneEl.checked;
@@ -1117,9 +1147,7 @@
       showToast("Font updated");
     });
 
-    sizeSlider.addEventListener("input", () => {
-      setTileSize(Number(sizeSlider.value));
-    });
+    sizeSlider.addEventListener("input", () => setTileSize(Number(sizeSlider.value)));
 
     // Hide top panel while scrolling down, show while scrolling up
     let lastScrollY = window.scrollY;
