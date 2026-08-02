@@ -237,31 +237,31 @@
     {
       "id": "d85ff58f-fb11-44af-b919-9d86013fa026",
       "text": "Maida",
-      "checked": true,
+      "checked": false,
       "order": 39
     },
     {
       "id": "c4d352d6-d638-4fa2-8ff8-314b411e5bb7",
       "text": "Black pepper",
-      "checked": true,
+      "checked": false,
       "order": 40
     },
     {
       "id": "431198ce-fa42-453b-9c9a-180c9c062bf5",
       "text": "Surf",
-      "checked": true,
+      "checked": false,
       "order": 41
     },
     {
       "id": "204ca0c5-ef54-4aa7-a66f-7b2315bf2873",
       "text": "Burger patty",
-      "checked": true,
+      "checked": false,
       "order": 42
     },
     {
       "id": "766bc361-b6e8-41e2-94bc-091d2d2e8d6d",
       "text": "Atta",
-      "checked": true,
+      "checked": false,
       "order": 43
     }
   ]
