@@ -11,7 +11,7 @@
       "id": "431198ce-fa42-453b-9c9a-180c9c062bf5",
       "text": "Surf",
       "checked": false,
-      "order": 2,
+      "order": 1,
       "groupId": null
     },
     {
@@ -312,7 +312,7 @@
       "id": "6d99d1cc-8a91-41ff-b9cd-b667436eec7d",
       "text": "Oil",
       "checked": false,
-      "order": 1,
+      "order": 2,
       "groupId": null
     }
   ]
