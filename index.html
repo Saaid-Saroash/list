@@ -5,393 +5,388 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shopping List</title>
   <style>
-    :root{
-      --bg:#0b0f14;
-      --panel:#111722;
-      --panel-2:#151d2a;
-      --text:#e9eef7;
-      --muted:#8e9ab0;
-      --line:#253044;
-      --accent:#6ee7ff;
-      --accent-2:#8b5cf6;
-      --danger:#ff5d6c;
-      --success:#35d07f;
-      --shadow: 0 18px 50px rgba(0,0,0,.35);
-      --radius: 22px;
+    :root {
+      --bg: #0b0f14;
+      --panel: #111722;
+      --panel-2: #0f151f;
+      --text: #e8edf5;
+      --muted: #94a3b8;
+      --line: #223047;
+      --accent: #63e6ff;
+      --accent-2: #8b5cf6;
+      --danger: #ff6577;
+      --success: #35d07f;
+      --shadow: 0 10px 26px rgba(0, 0, 0, .22);
+      --radius: 18px;
+      --font-scale: 1;
+      --tile-scale: 1;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
+
+    [data-font="small"] { --font-scale: .94; }
+    [data-font="medium"] { --font-scale: 1; }
+    [data-font="large"] { --font-scale: 1.12; }
+    [data-font="xl"] { --font-scale: 1.24; }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(110,231,255,.13), transparent 30%),
-        radial-gradient(circle at 80% 20%, rgba(139,92,246,.10), transparent 22%),
-        linear-gradient(180deg, #081018 0%, #0b0f14 100%);
-      color:var(--text);
-      overflow-x:hidden;
+      background: linear-gradient(180deg, #081018 0%, #0b0f14 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      font-size: calc(15px * var(--font-scale));
     }
-    .app{
-      max-width: 920px;
+
+    .app {
+      max-width: 980px;
       margin: 0 auto;
-      padding: 24px 16px 40px;
+      padding: 20px 14px 34px;
     }
-    .hero{
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border: 1px solid rgba(255,255,255,.07);
+
+    .shell {
+      background: rgba(17, 23, 34, .92);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 24px;
       box-shadow: var(--shadow);
-      border-radius: 28px;
-      padding: 18px;
-      backdrop-filter: blur(14px);
+      padding: 16px;
+      backdrop-filter: blur(12px);
     }
-    .topbar{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      margin-bottom:16px;
+
+    .topbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
     }
-    .title-wrap{display:flex; flex-direction:column; gap:4px;}
-    h1{
-      margin:0;
-      font-size: clamp(28px, 4vw, 40px);
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 3.8vw, 34px);
       letter-spacing: -.04em;
       line-height: 1.05;
     }
-    .subtitle{
-      margin:0;
-      color:var(--muted);
-      font-size: 14px;
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 14px;
-      border-radius:999px;
-      background: rgba(110,231,255,.08);
-      border:1px solid rgba(110,231,255,.18);
-      color: #cfefff;
-      font-size: 13px;
-      user-select:none;
-    }
-    .badge-dot{
-      width:10px;height:10px;border-radius:999px;background:var(--success);
-      box-shadow: 0 0 0 6px rgba(53,208,127,.12);
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto auto auto;
+      gap: 10px;
+      margin-top: 12px;
+      align-items: stretch;
     }
 
-    .controls{
-      display:grid;
-      grid-template-columns: 1fr auto auto;
-      gap:10px;
-      margin: 18px 0 14px;
+    .input, .select, .range-wrap {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(8, 12, 18, .95);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 13px 14px;
+      outline: none;
+      font-size: 1em;
+      transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .02);
     }
-    .input{
-      width:100%;
-      border:1px solid var(--line);
-      background: rgba(8,12,18,.85);
-      color:var(--text);
-      border-radius: 16px;
-      padding: 15px 16px;
-      outline:none;
-      font-size: 15px;
-      transition: .2s ease;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+
+    .input:focus, .select:focus {
+      border-color: rgba(99, 230, 255, .6);
+      box-shadow: 0 0 0 3px rgba(99, 230, 255, .10);
     }
-    .input:focus{
-      border-color: rgba(110,231,255,.55);
-      box-shadow: 0 0 0 4px rgba(110,231,255,.10);
-    }
-    .btn{
-      border:none;
-      border-radius: 16px;
-      padding: 14px 16px;
+
+    .btn {
+      border: none;
+      border-radius: 14px;
+      padding: 13px 15px;
       font-weight: 700;
+      font-size: .95em;
       color: #061018;
-      cursor:pointer;
-      transition: .18s ease;
-      user-select:none;
-      white-space:nowrap;
-      box-shadow: 0 12px 24px rgba(0,0,0,.22);
-    }
-    .btn:hover{transform: translateY(-1px)}
-    .btn:active{transform: translateY(1px)}
-    .btn-add{
-      background: linear-gradient(135deg, var(--accent), #9ae6ff);
-    }
-    .btn-clear{
-      background: linear-gradient(135deg, #ffd166, #ff8f70);
-    }
-    .btn-small{
-      padding: 10px 12px;
-      font-size: 13px;
-      border-radius: 12px;
+      cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease, filter .15s ease;
+      white-space: nowrap;
+      user-select: none;
     }
 
-    .status-row{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin: 8px 0 14px;
-      color:var(--muted);
-      font-size: 13px;
-    }
-    .status{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .pill{
-      padding: 6px 10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(1px); }
+
+    .btn-add { background: linear-gradient(135deg, var(--accent), #9ae6ff); }
+    .btn-clear { background: linear-gradient(135deg, #ffd166, #ff8f70); }
+
+    .range-wrap {
+      display: grid;
+      gap: 8px;
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
 
-    .list{
-      margin:0;
-      padding:0;
-      list-style:none;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+    .range-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: .88em;
+      line-height: 1;
+      user-select: none;
     }
-    .item{
-      position:relative;
-      display:grid;
-      grid-template-columns: auto 1fr auto;
-      gap:12px;
-      align-items:center;
-      padding: 14px 14px 14px 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: 18px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.18);
-      overflow:hidden;
+
+    .range {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 72px;
+      contain: content;
+    }
+
+    .item {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: calc(12px * var(--tile-scale)) 12px;
+      min-height: calc(56px * var(--tile-scale));
+      background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .02));
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 16px;
+      overflow: hidden;
       touch-action: pan-y;
-      transition: transform .16s ease, opacity .16s ease, border-color .16s ease;
+      will-change: transform, opacity;
     }
-    .item::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(90deg, rgba(110,231,255,.08), transparent 28%, transparent 72%, rgba(139,92,246,.08));
+
+    .item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(99, 230, 255, .06), transparent 24%, transparent 76%, rgba(139, 92, 246, .06));
       opacity: 0;
-      transition:.18s ease;
-      pointer-events:none;
-    }
-    .item:hover::before{opacity:1}
-
-    .item.swiping{
-      transition:none;
-    }
-    .item.deleting{
-      opacity:0;
-      transform: scale(.96);
+      pointer-events: none;
+      transition: opacity .15s ease;
     }
 
-    .check-wrap{
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    .item:hover::before { opacity: 1; }
+
+    .item.done .text {
+      color: rgba(232, 237, 245, .58);
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+    }
+
+    .check-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 22px;
+      flex: 0 0 auto;
     }
-    .check{
-      appearance:none;
+
+    .check {
+      appearance: none;
       width: 22px;
       height: 22px;
       border-radius: 7px;
       border: 2px solid #4b5d79;
-      background: rgba(7,10,15,.8);
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      transition:.18s ease;
-      margin:0;
+      background: rgba(7, 10, 15, .85);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      margin: 0;
+      transition: .15s ease;
     }
-    .check::after{
-      content:"";
+
+    .check::after {
+      content: "";
       width: 10px;
       height: 5px;
       border-left: 3px solid transparent;
       border-bottom: 3px solid transparent;
       transform: rotate(-45deg) translateY(-1px);
-      transition: .18s ease;
     }
-    .check:checked{
-      border-color: rgba(53,208,127,.95);
-      background: rgba(53,208,127,.18);
-      box-shadow: 0 0 0 4px rgba(53,208,127,.09);
+
+    .check:checked {
+      border-color: rgba(53, 208, 127, .95);
+      background: rgba(53, 208, 127, .16);
+      box-shadow: 0 0 0 4px rgba(53, 208, 127, .08);
     }
-    .check:checked::after{
+
+    .check:checked::after {
       border-left-color: var(--success);
       border-bottom-color: var(--success);
     }
 
-    .text{
-      min-width:0;
-      font-size: 15px;
-      line-height:1.35;
+    .text {
+      min-width: 0;
+      line-height: 1.35;
       word-break: break-word;
-    }
-    .done .text{
-      color: rgba(233,238,247,.55);
-      text-decoration: line-through;
-      text-decoration-thickness: 2px;
+      user-select: none;
     }
 
-    .drag-handle{
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .drag-handle,
+    .delete-btn {
       width: 34px;
       height: 34px;
-      display:grid;
-      place-items:center;
-      border-radius: 12px;
-      color: #c4cfdf;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      user-select: none;
+      border: 1px solid rgba(255, 255, 255, .07);
+      background: rgba(255, 255, 255, .04);
+      color: #d4dce8;
+      flex: 0 0 auto;
+    }
+
+    .drag-handle {
       cursor: grab;
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.06);
-      user-select:none;
       font-size: 18px;
-      line-height:1;
-      touch-action:none;
-    }
-    .drag-handle:active{cursor:grabbing}
-
-    .meta{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 12px;
+      line-height: 1;
+      touch-action: none;
     }
 
-    .empty{
-      padding: 28px 16px;
-      border: 1px dashed rgba(255,255,255,.12);
-      border-radius: 20px;
-      color: var(--muted);
-      text-align:center;
-      background: rgba(255,255,255,.03);
+    .delete-btn {
+      cursor: pointer;
+      border-color: rgba(255, 101, 119, .20);
+      color: #ff9aa4;
+      font-size: 16px;
     }
 
-    .swipe-hint{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 10px;
+    .drag-handle:active { cursor: grabbing; }
+
+    .item.swiping {
+      transition: none;
     }
 
-    .toast{
-      position:fixed;
-      left:50%;
-      bottom:20px;
-      transform:translateX(-50%) translateY(16px);
-      background: rgba(10,14,20,.92);
-      border:1px solid rgba(255,255,255,.10);
-      color:var(--text);
-      padding: 12px 14px;
+    .item.deleting {
+      opacity: 0;
+      transform: scale(.97);
+      transition: opacity .15s ease, transform .15s ease;
+    }
+
+    .drop-line {
+      height: 2px;
+      margin: 0 10px;
       border-radius: 999px;
-      box-shadow: var(--shadow);
-      opacity:0;
-      pointer-events:none;
-      transition:.2s ease;
-      z-index:50;
-      max-width: calc(100vw - 24px);
-      text-align:center;
-      font-size: 13px;
-    }
-    .toast.show{
-      opacity:1;
-      transform:translateX(-50%) translateY(0);
+      background: rgba(99, 230, 255, .6);
+      box-shadow: 0 0 0 3px rgba(99, 230, 255, .10);
     }
 
-    .drag-placeholder{
-      height: 62px;
-      border-radius: 18px;
-      border: 1px dashed rgba(110,231,255,.32);
-      background: rgba(110,231,255,.05);
-    }
-
-    @media (max-width: 700px){
-      .controls{
+    @media (max-width: 900px) {
+      .controls {
         grid-template-columns: 1fr 1fr;
       }
-      .controls .btn-add{grid-column: 1 / span 1;}
-      .controls .btn-clear{grid-column: 2 / span 1;}
-      .controls .input{grid-column: 1 / -1;}
-      .item{
-        grid-template-columns: auto 1fr 30px;
+      .input { grid-column: 1 / -1; }
+      .btn-add { grid-column: 1 / span 1; }
+      .btn-clear { grid-column: 2 / span 1; }
+      .select { grid-column: 1 / span 1; }
+      .range-wrap { grid-column: 2 / span 1; }
+    }
+
+    @media (max-width: 540px) {
+      .controls {
+        grid-template-columns: 1fr;
+      }
+      .input,
+      .btn-add,
+      .btn-clear,
+      .select,
+      .range-wrap {
+        grid-column: 1 / -1;
+      }
+      .item {
+        grid-template-columns: auto minmax(0, 1fr) auto;
         padding-right: 10px;
       }
-      .drag-handle{
-        width: 30px;
-        height: 30px;
-        border-radius: 10px;
-      }
+      .actions { gap: 6px; }
+      .drag-handle, .delete-btn { width: 32px; height: 32px; }
     }
   </style>
 </head>
-<body>
+<body data-font="medium">
   <div class="app">
-    <div class="hero">
+    <div class="shell">
       <div class="topbar">
-        <div class="title-wrap">
-          <h1>Shopping List</h1>
-          <p class="subtitle">Checked items move to the bottom. Swipe left/right to delete. Drag using the handle to reorder.</p>
-        </div>
-        <div class="badge"><span class="badge-dot"></span><span>Dark mode • Auto saved</span></div>
+        <h1>Shopping List</h1>
       </div>
 
       <div class="controls">
-        <input id="itemInput" class="input" type="text" placeholder="Add an item..." maxlength="120" />
+        <input id="itemInput" class="input" type="text" placeholder="Add item" maxlength="120" autocomplete="off" />
         <button id="addBtn" class="btn btn-add">Add Item</button>
         <button id="clearBtn" class="btn btn-clear">Clear Checks</button>
-      </div>
 
-      <div class="status-row">
-        <div class="status">
-          <span class="pill" id="countPill">0 items</span>
-          <span class="pill" id="savePill">Ready</span>
-        </div>
-        <div class="status">
-          <span class="pill">Tip: hold the three-line handle to drag</span>
+        <select id="fontSize" class="select" aria-label="Font size">
+          <option value="small">Font: Small</option>
+          <option value="medium" selected>Font: Medium</option>
+          <option value="large">Font: Large</option>
+          <option value="xl">Font: Extra Large</option>
+        </select>
+
+        <div class="range-wrap">
+          <div class="range-label"><span>Tile Size</span><span id="tileLabel">100%</span></div>
+          <input id="tileSize" class="range" type="range" min="85" max="140" value="100" />
         </div>
       </div>
 
       <ul id="list" class="list"></ul>
-      <div id="emptyState" class="empty" style="display:none;">No items yet. Add something above.</div>
-      <div class="swipe-hint">Swipe any item to the left or right to delete it.</div>
     </div>
   </div>
 
   <div id="toast" class="toast"></div>
 
   <script>
-    const STORAGE_KEY = "shopping_list_dark_v1";
-    const API_LIST_URL = "/api/list";
-    const API_SAVE_URL = "/api/save";
+    const STORAGE_KEY = "shopping_list_dark_v3";
+
+    // Change this if the front-end is hosted on GitHub Pages.
+    // GitHub Pages cannot run /api routes, so the API must live on Vercel.
+    const API_BASE_URL = (() => {
+      const saved = localStorage.getItem("shopping_api_base");
+      if (saved) return saved.replace(/\/$/, "");
+      if (location.hostname.endsWith(".vercel.app")) return location.origin;
+      return "https://YOUR-PROJECT-NAME.vercel.app";
+    })();
+
+    const API_LIST_URL = `${API_BASE_URL}/api/list`;
+    const API_SAVE_URL = `${API_BASE_URL}/api/save`;
 
     const state = {
       items: [],
-      dragId: null,
-      dragOverId: null,
-      swipes: new Map(),
       syncTimer: null,
-      loaded: false,
+      dragId: null,
+      swipeItem: null,
+      fontSize: localStorage.getItem("shopping_font_size") || "medium",
+      tileSize: Number(localStorage.getItem("shopping_tile_size") || 100),
     };
 
-    const $ = (sel) => document.querySelector(sel);
-    const listEl = $("#list");
-    const inputEl = $("#itemInput");
-    const addBtn = $("#addBtn");
-    const clearBtn = $("#clearBtn");
-    const countPill = $("#countPill");
-    const savePill = $("#savePill");
-    const emptyState = $("#emptyState");
-    const toast = $("#toast");
+    const listEl = document.getElementById("list");
+    const inputEl = document.getElementById("itemInput");
+    const addBtn = document.getElementById("addBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const fontSizeEl = document.getElementById("fontSize");
+    const tileSizeEl = document.getElementById("tileSize");
+    const tileLabelEl = document.getElementById("tileLabel");
+    const toast = document.getElementById("toast");
+
+    fontSizeEl.value = state.fontSize;
+    tileSizeEl.value = String(state.tileSize);
+    document.body.dataset.font = state.fontSize;
+    document.documentElement.style.setProperty("--tile-scale", String(state.tileSize / 100));
+    tileLabelEl.textContent = `${state.tileSize}%`;
 
     function uid() {
       return crypto?.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()).replace(".", "");
@@ -401,11 +396,7 @@
       toast.textContent = message;
       toast.classList.add("show");
       clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => toast.classList.remove("show"), 1800);
-    }
-
-    function setSaveStatus(text) {
-      savePill.textContent = text;
+      showToast._t = setTimeout(() => toast.classList.remove("show"), 1300);
     }
 
     function sortedItems() {
@@ -427,22 +418,36 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
     }
 
+    function setFontSize(size) {
+      state.fontSize = size;
+      document.body.dataset.font = size;
+      localStorage.setItem("shopping_font_size", size);
+    }
+
+    function setTileSize(size) {
+      state.tileSize = size;
+      document.documentElement.style.setProperty("--tile-scale", String(size / 100));
+      localStorage.setItem("shopping_tile_size", String(size));
+      tileLabelEl.textContent = `${size}%`;
+    }
+
     async function loadRemote() {
       try {
         const res = await fetch(API_LIST_URL, { cache: "no-store" });
-        if (!res.ok) throw new Error("Remote not available");
+        if (!res.ok) throw new Error("remote load failed");
         const data = await res.json();
         if (Array.isArray(data.items)) {
           state.items = normalizeOrder(
-            data.items.map((item, index) => ({
-              id: item.id || uid(),
-              text: String(item.text || "").trim(),
-              checked: !!item.checked,
-              order: Number.isFinite(item.order) ? item.order : index,
-            })).filter(item => item.text)
+            data.items
+              .map((item, index) => ({
+                id: item.id || uid(),
+                text: String(item.text || "").trim(),
+                checked: !!item.checked,
+                order: Number.isFinite(item.order) ? item.order : index,
+              }))
+              .filter(item => item.text)
           );
           persistLocal();
-          setSaveStatus("Loaded from GitHub");
           return true;
         }
       } catch (e) {}
@@ -456,12 +461,14 @@
         const parsed = JSON.parse(raw);
         if (!Array.isArray(parsed)) return false;
         state.items = normalizeOrder(
-          parsed.map((item, index) => ({
-            id: item.id || uid(),
-            text: String(item.text || "").trim(),
-            checked: !!item.checked,
-            order: Number.isFinite(item.order) ? item.order : index,
-          })).filter(item => item.text)
+          parsed
+            .map((item, index) => ({
+              id: item.id || uid(),
+              text: String(item.text || "").trim(),
+              checked: !!item.checked,
+              order: Number.isFinite(item.order) ? item.order : index,
+            }))
+            .filter(item => item.text)
         );
         return true;
       } catch (e) {
@@ -471,23 +478,18 @@
 
     function queueRemoteSave() {
       clearTimeout(state.syncTimer);
-      state.syncTimer = setTimeout(syncRemote, 700);
+      state.syncTimer = setTimeout(syncRemote, 250);
     }
 
     async function syncRemote() {
       persistLocal();
-      setSaveStatus("Saving...");
       try {
-        const res = await fetch(API_SAVE_URL, {
+        await fetch(API_SAVE_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ items: state.items })
         });
-        if (!res.ok) throw new Error("Save failed");
-        setSaveStatus("Saved to GitHub");
-      } catch (e) {
-        setSaveStatus("Saved locally");
-      }
+      } catch (e) {}
     }
 
     function saveNow() {
@@ -506,7 +508,7 @@
         order: state.items.length,
       });
       saveNow();
-      showToast("Item added");
+      showToast("Added");
     }
 
     function toggleItem(id, checked) {
@@ -521,17 +523,12 @@
       state.items = state.items.filter(i => i.id !== id);
       state.items = normalizeOrder(state.items);
       saveNow();
-      showToast("Item deleted");
+      showToast("Deleted");
     }
 
     function clearChecks() {
-      const anyChecked = state.items.some(i => i.checked);
-      if (!anyChecked) {
-        showToast("No checked items");
-        return;
-      }
-      const ok = confirm("Clear all check marks?");
-      if (!ok) return;
+      if (!state.items.some(i => i.checked)) return;
+      if (!confirm("Clear all checks?")) return;
       state.items = state.items.map(i => ({ ...i, checked: false }));
       state.items = normalizeOrder(state.items);
       saveNow();
@@ -543,130 +540,136 @@
       const fromIndex = view.findIndex(i => i.id === fromId);
       const toIndex = view.findIndex(i => i.id === toId);
       if (fromIndex < 0 || toIndex < 0 || fromIndex === toIndex) return;
-
       const moving = view.splice(fromIndex, 1)[0];
       view.splice(toIndex, 0, moving);
-
-      state.items = view.map((item, index) => ({
-        ...item,
-        order: index,
-      }));
+      state.items = view.map((item, index) => ({ ...item, order: index }));
       saveNow();
     }
 
     function render() {
       const view = sortedItems();
-      countPill.textContent = `${view.length} item${view.length === 1 ? "" : "s"}`;
+      const fragment = document.createDocumentFragment();
+      listEl.replaceChildren();
 
-      listEl.innerHTML = "";
-      emptyState.style.display = view.length ? "none" : "block";
-
-      view.forEach((item) => {
+      for (const item of view) {
         const li = document.createElement("li");
         li.className = "item" + (item.checked ? " done" : "");
         li.dataset.id = item.id;
-        li.draggable = false;
 
-        const checkWrap = document.createElement("div");
-        checkWrap.className = "check-wrap";
+        li.innerHTML = `
+          <div class="check-wrap">
+            <input type="checkbox" class="check" data-action="toggle" data-id="${item.id}" ${item.checked ? "checked" : ""} />
+          </div>
+          <div class="text">${escapeHtml(item.text)}</div>
+          <div class="actions">
+            <div class="drag-handle" draggable="true" data-action="drag" data-id="${item.id}" title="Drag">≡</div>
+            <button type="button" class="delete-btn" data-action="delete" data-id="${item.id}" title="Delete">×</button>
+          </div>
+        `;
 
-        const check = document.createElement("input");
-        check.type = "checkbox";
-        check.className = "check";
-        check.checked = item.checked;
-        check.addEventListener("change", () => toggleItem(item.id, check.checked));
+        fragment.appendChild(li);
+      }
 
-        const text = document.createElement("div");
-        text.className = "text";
-        text.textContent = item.text;
-
-        const handle = document.createElement("div");
-        handle.className = "drag-handle";
-        handle.title = "Drag to reorder";
-        handle.textContent = "≡";
-        handle.draggable = true;
-        handle.addEventListener("dragstart", (e) => {
-          state.dragId = item.id;
-          handle.style.opacity = "0.5";
-          e.dataTransfer.effectAllowed = "move";
-          e.dataTransfer.setData("text/plain", item.id);
-        });
-        handle.addEventListener("dragend", () => {
-          state.dragId = null;
-          state.dragOverId = null;
-          render();
-        });
-
-        li.addEventListener("dragover", (e) => {
-          if (!state.dragId || state.dragId === item.id) return;
-          e.preventDefault();
-          li.style.outline = "1px dashed rgba(110,231,255,.35)";
-          state.dragOverId = item.id;
-        });
-
-        li.addEventListener("dragleave", () => {
-          li.style.outline = "none";
-        });
-
-        li.addEventListener("drop", (e) => {
-          e.preventDefault();
-          li.style.outline = "none";
-          const fromId = state.dragId || e.dataTransfer.getData("text/plain");
-          const toId = item.id;
-          if (fromId && toId) reorderByVisibleOrder(fromId, toId);
-          state.dragId = null;
-          state.dragOverId = null;
-        });
-
-        // Swipe delete
-        let startX = 0;
-        let currentX = 0;
-        let pointerActive = false;
-
-        li.addEventListener("pointerdown", (e) => {
-          if (e.target.closest(".drag-handle") || e.target.closest(".check")) return;
-          pointerActive = true;
-          startX = e.clientX;
-          currentX = startX;
-          li.classList.add("swiping");
-          li.setPointerCapture?.(e.pointerId);
-        });
-
-        li.addEventListener("pointermove", (e) => {
-          if (!pointerActive) return;
-          currentX = e.clientX;
-          const deltaX = currentX - startX;
-          li.style.transform = `translateX(${deltaX}px)`;
-          li.style.opacity = String(Math.max(0.35, 1 - Math.abs(deltaX) / 260));
-        });
-
-        function endSwipe() {
-          if (!pointerActive) return;
-          pointerActive = false;
-          const deltaX = currentX - startX;
-          li.classList.remove("swiping");
-          li.style.transition = "transform .18s ease, opacity .18s ease";
-          if (Math.abs(deltaX) > 95) {
-            li.classList.add("deleting");
-            setTimeout(() => deleteItem(item.id), 150);
-          } else {
-            li.style.transform = "";
-            li.style.opacity = "";
-            setTimeout(() => { li.style.transition = ""; }, 200);
-          }
-        }
-
-        li.addEventListener("pointerup", endSwipe);
-        li.addEventListener("pointercancel", endSwipe);
-        li.addEventListener("pointerleave", () => { if (pointerActive) endSwipe(); });
-
-        checkWrap.appendChild(check);
-        li.appendChild(checkWrap);
-        li.appendChild(text);
-        li.appendChild(handle);
-        listEl.appendChild(li);
-      });
+      listEl.appendChild(fragment);
     }
+
+    function escapeHtml(str) {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    listEl.addEventListener("change", (e) => {
+      const target = e.target;
+      if (target.matches('input[type="checkbox"][data-action="toggle"]')) {
+        toggleItem(target.dataset.id, target.checked);
+      }
+    });
+
+    listEl.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-action]");
+      if (!btn) return;
+      if (btn.dataset.action === "delete") {
+        deleteItem(btn.dataset.id);
+      }
+    });
+
+    listEl.addEventListener("dragstart", (e) => {
+      const handle = e.target.closest('.drag-handle[data-action="drag"]');
+      if (!handle) return;
+      state.dragId = handle.dataset.id;
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", state.dragId);
+    });
+
+    listEl.addEventListener("dragover", (e) => {
+      if (!state.dragId) return;
+      const item = e.target.closest(".item");
+      if (!item) return;
+      e.preventDefault();
+    });
+
+    listEl.addEventListener("drop", (e) => {
+      if (!state.dragId) return;
+      const item = e.target.closest(".item");
+      if (!item) return;
+      e.preventDefault();
+      const fromId = state.dragId || e.dataTransfer.getData("text/plain");
+      const toId = item.dataset.id;
+      if (fromId && toId) reorderByVisibleOrder(fromId, toId);
+      state.dragId = null;
+    });
+
+    listEl.addEventListener("pointerdown", (e) => {
+      const item = e.target.closest(".item");
+      if (!item) return;
+      if (e.target.closest(".drag-handle") || e.target.closest(".check") || e.target.closest(".delete-btn")) return;
+      state.swipeItem = {
+        id: item.dataset.id,
+        el: item,
+        startX: e.clientX,
+        currentX: e.clientX,
+        active: true
+      };
+      item.classList.add("swiping");
+      try { item.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+
+    listEl.addEventListener("pointermove", (e) => {
+      if (!state.swipeItem || !state.swipeItem.active) return;
+      state.swipeItem.currentX = e.clientX;
+      const deltaX = state.swipeItem.currentX - state.swipeItem.startX;
+      state.swipeItem.el.style.transform = `translateX(${deltaX}px)`;
+      state.swipeItem.el.style.opacity = String(Math.max(0.35, 1 - Math.abs(deltaX) / 240));
+    });
+
+    function finishSwipe() {
+      if (!state.swipeItem) return;
+      const { el, startX, currentX } = state.swipeItem;
+      const deltaX = currentX - startX;
+      el.classList.remove("swiping");
+
+      if (Math.abs(deltaX) > 90) {
+        el.classList.add("deleting");
+        const id = state.swipeItem.id;
+        state.swipeItem = null;
+        setTimeout(() => deleteItem(id), 110);
+        return;
+      }
+
+      el.style.transform = "";
+      el.style.opacity = "";
+      state.swipeItem = null;
+    }
+
+    listEl.addEventListener("pointerup", finishSwipe);
+    listEl.addEventListener("pointercancel", finishSwipe);
+    listEl.addEventListener("pointerleave", (e) => {
+      if (state.swipeItem && state.swipeItem.active) finishSwipe();
+    });
 
     addBtn.addEventListener("click", () => {
       addItem(inputEl.value);
@@ -675,21 +678,25 @@
     });
 
     inputEl.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        addBtn.click();
-      }
+      if (e.key === "Enter") addBtn.click();
     });
 
     clearBtn.addEventListener("click", clearChecks);
 
+    fontSizeEl.addEventListener("change", () => {
+      setFontSize(fontSizeEl.value);
+      showToast("Font updated");
+    });
+
+    tileSizeEl.addEventListener("input", () => {
+      setTileSize(Number(tileSizeEl.value));
+    });
+
     async function init() {
-      const loadedRemote = await loadRemote();
-      if (!loadedRemote) loadLocal();
+      const remoteLoaded = await loadRemote();
+      if (!remoteLoaded) loadLocal();
       state.items = normalizeOrder(state.items);
       render();
-      state.loaded = true;
-      if (!loadedRemote) setSaveStatus("Loaded locally");
-      setTimeout(() => setSaveStatus("Ready"), 1000);
     }
 
     window.addEventListener("beforeunload", persistLocal);
