@@ -270,7 +270,7 @@
       "id": "0c15fcf3-bf72-4142-bc67-c06cb73eff6a",
       "text": "Toffee",
       "checked": false,
-      "order": 38,
+      "order": 41,
       "groupId": null
     },
     {
@@ -284,14 +284,14 @@
       "id": "e1eb1488-6da5-452e-89bb-8791daeb10ee",
       "text": "Nuggets",
       "checked": false,
-      "order": 40,
+      "order": 38,
       "groupId": null
     },
     {
       "id": "204ca0c5-ef54-4aa7-a66f-7b2315bf2873",
       "text": "Burger patty",
       "checked": false,
-      "order": 41,
+      "order": 40,
       "groupId": null
     },
     {
