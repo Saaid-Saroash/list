@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
   <title>Shopping List</title>
   <style>
     :root {
-      --bg0: #060b12;
-      --bg1: #08111a;
-      --glass: rgba(18, 24, 36, 0.58);
+      --bg0: #050a11;
+      --bg1: #08101a;
+      --glass: rgba(17, 23, 34, 0.58);
       --glass2: rgba(255, 255, 255, 0.06);
       --text: #e9eef7;
       --muted: #a0aec3;
@@ -22,6 +22,7 @@
       --radius-md: 14px;
       --font-scale: 1;
       --tile-scale: 1;
+      --panel-h: 92px;
     }
 
     [data-font="small"] { --font-scale: 0.94; }
@@ -39,10 +40,10 @@
       font-size: calc(15px * var(--font-scale));
       color: var(--text);
       background:
-        radial-gradient(circle at 8% 10%, rgba(104, 232, 255, 0.16), transparent 18%),
-        radial-gradient(circle at 92% 8%, rgba(155, 123, 255, 0.14), transparent 18%),
-        radial-gradient(circle at 50% 100%, rgba(53, 208, 127, 0.10), transparent 16%),
-        linear-gradient(180deg, var(--bg1), var(--bg0));
+        radial-gradient(circle at 10% 10%, rgba(104, 232, 255, 0.14), transparent 20%),
+        radial-gradient(circle at 90% 8%, rgba(155, 123, 255, 0.12), transparent 20%),
+        radial-gradient(circle at 50% 100%, rgba(53, 208, 127, 0.08), transparent 18%),
+        linear-gradient(180deg, var(--bg1) 0%, var(--bg0) 100%);
       overflow-x: hidden;
       overflow-anchor: none;
     }
@@ -55,24 +56,34 @@
       background:
         linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 48px 48px;
-      opacity: 0.12;
+      background-size: 54px 54px;
+      opacity: 0.08;
       mask-image: linear-gradient(180deg, rgba(0,0,0,0.35), transparent 85%);
     }
 
     .app {
-      width: min(1040px, calc(100vw - 20px));
+      width: min(1100px, calc(100vw - 14px));
       margin: 0 auto;
-      padding: 12px 0 30px;
+      padding: 10px 0 28px;
     }
 
-    .panel {
-      width: min(760px, calc(100vw - 20px));
+    .panel-wrap {
+      width: min(780px, calc(100vw - 14px));
       margin: 0 auto;
       position: sticky;
       top: 10px;
-      z-index: 10;
-      background: linear-gradient(180deg, rgba(22, 30, 44, 0.72), rgba(16, 22, 34, 0.58));
+      z-index: 20;
+      transition: transform 0.24s ease, opacity 0.24s ease;
+      will-change: transform, opacity;
+    }
+    .panel-wrap.hidden {
+      transform: translateY(-140%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(21, 29, 43, 0.76), rgba(13, 18, 28, 0.58));
       border: 1px solid rgba(255,255,255,0.10);
       border-radius: var(--radius-xl);
       box-shadow: var(--shadow);
@@ -203,15 +214,14 @@
     }
 
     .content {
-      width: min(1040px, calc(100vw - 20px));
+      width: min(1100px, calc(100vw - 14px));
       margin: 14px auto 0;
       display: grid;
       gap: 12px;
     }
 
-    .group-shell,
-    .ungrouped-shell {
-      background: linear-gradient(180deg, rgba(22, 30, 44, 0.50), rgba(12, 18, 28, 0.38));
+    .shell {
+      background: linear-gradient(180deg, rgba(21, 29, 43, 0.48), rgba(11, 17, 27, 0.36));
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 22px;
       box-shadow: var(--shadow);
@@ -225,7 +235,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 12px 12px 10px;
+      padding: 12px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
       background: rgba(255,255,255,0.03);
     }
@@ -257,7 +267,6 @@
       cursor: pointer;
       user-select: none;
     }
-    .small-btn:hover { filter: brightness(1.05); }
 
     .drop-zone {
       padding: 12px;
@@ -293,7 +302,7 @@
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 18px;
       overflow: hidden;
-      touch-action: none;
+      touch-action: pan-y;
       will-change: transform, opacity;
       position: relative;
     }
@@ -422,14 +431,19 @@
       box-shadow: 0 0 0 6px rgba(104,232,255,0.10);
     }
 
+    .spacer {
+      height: 8px;
+    }
+
     @media (max-width: 860px) {
-      .panel { width: min(100%, calc(100vw - 16px)); }
-      .content { width: min(100%, calc(100vw - 16px)); }
+      .panel-wrap { width: min(100%, calc(100vw - 10px)); }
+      .content { width: min(100%, calc(100vw - 10px)); }
       .input { width: 180px; }
     }
 
     @media (max-width: 560px) {
-      .panel { top: 8px; padding: 10px; }
+      .panel-wrap { top: 8px; }
+      .panel { padding: 10px; }
       .input { width: 160px; }
       .toast-stack { left: 12px; bottom: 12px; right: 12px; max-width: calc(100vw - 24px); }
       .item { grid-template-columns: auto minmax(0, 1fr) auto; }
@@ -439,26 +453,28 @@
 </head>
 <body data-font="medium">
   <div class="app">
-    <div class="panel">
-      <div class="toolbar">
-        <input id="itemInput" class="input" type="text" placeholder="Add item" maxlength="120" autocomplete="off" />
-        <button id="addBtn" class="chip btn-add" type="button">Add</button>
-        <button id="groupBtn" class="chip btn-group" type="button">+ Group</button>
-        <button id="clearBtn" class="chip btn-clear" type="button">Clear Checks</button>
-        <label class="toggle" title="Move checked items to the bottom with Done heading">
-          <span>Group Done</span>
-          <input id="groupDone" type="checkbox" />
-          <span class="switch"></span>
-        </label>
-        <select id="fontSelect" class="select" aria-label="Font size">
-          <option value="small">Font: Small</option>
-          <option value="medium">Font: Medium</option>
-          <option value="large">Font: Large</option>
-          <option value="xl">Font: Extra Large</option>
-        </select>
-        <div class="range-wrap">
-          <div class="range-label"><span>Tile Height</span><span id="sizeLabel">100%</span></div>
-          <input id="sizeSlider" class="range" type="range" min="85" max="140" value="100" />
+    <div id="panelWrap" class="panel-wrap">
+      <div class="panel">
+        <div class="toolbar">
+          <input id="itemInput" class="input" type="text" placeholder="Add item" maxlength="120" autocomplete="off" />
+          <button id="addBtn" class="chip btn-add" type="button">Add</button>
+          <button id="groupBtn" class="chip btn-group" type="button">+ Group</button>
+          <button id="clearBtn" class="chip btn-clear" type="button">Clear Checks</button>
+          <label class="toggle" title="When on, all items are shown as just Active and Done">
+            <span>Group Done</span>
+            <input id="groupDone" type="checkbox" />
+            <span class="switch"></span>
+          </label>
+          <select id="fontSelect" class="select" aria-label="Font size">
+            <option value="small">Font: Small</option>
+            <option value="medium">Font: Medium</option>
+            <option value="large">Font: Large</option>
+            <option value="xl">Font: Extra Large</option>
+          </select>
+          <div class="range-wrap">
+            <div class="range-label"><span>Tile Height</span><span id="sizeLabel">100%</span></div>
+            <input id="sizeSlider" class="range" type="range" min="85" max="140" value="100" />
+          </div>
         </div>
       </div>
     </div>
@@ -469,7 +485,7 @@
   <div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="false"></div>
 
   <script>
-    const STORAGE_KEY = "shopping_list_state_v6";
+    const STORAGE_KEY = "shopping_list_state_v7";
     const API_BASE_URL = (() => {
       const saved = localStorage.getItem("shopping_api_base");
       if (saved) return saved.replace(/\/$/, "");
@@ -489,6 +505,7 @@
       groupDone: localStorage.getItem("shopping_group_done") === "true",
     };
 
+    const panelWrap = document.getElementById("panelWrap");
     const contentRoot = document.getElementById("contentRoot");
     const inputEl = document.getElementById("itemInput");
     const addBtn = document.getElementById("addBtn");
@@ -587,24 +604,28 @@
       sizeLabel.textContent = `${size}%`;
     }
 
-    function normalizeItemOrders(groupId) {
-      const bucket = state.items.filter(i => (i.groupId || null) === (groupId || null)).sort((a, b) => a.order - b.order);
-      bucket.forEach((item, index) => { item.order = index; });
+    function normalizeGroupOrders() {
+      [...state.groups].sort((a, b) => a.order - b.order).forEach((g, i) => g.order = i);
     }
 
-    function normalizeGroupOrders() {
-      const ordered = [...state.groups].sort((a, b) => a.order - b.order);
-      ordered.forEach((group, index) => { group.order = index; });
+    function normalizeItemsByGroup(groupId) {
+      const arr = state.items.filter(i => (i.groupId || null) === (groupId || null)).sort((a, b) => a.order - b.order);
+      arr.forEach((i, idx) => i.order = idx);
+    }
+
+    function sortItems() {
+      return [...state.items].sort((a, b) => {
+        if (a.groupId !== b.groupId) return String(a.groupId || "").localeCompare(String(b.groupId || ""));
+        return a.order - b.order;
+      });
     }
 
     function getOrderedGroups() {
       return [...state.groups].sort((a, b) => a.order - b.order);
     }
 
-    function getOrderedItemsByGroup(groupId) {
-      return state.items
-        .filter(i => (i.groupId || null) === (groupId || null))
-        .sort((a, b) => a.order - b.order);
+    function getItemsByGroup(groupId) {
+      return state.items.filter(i => (i.groupId || null) === (groupId || null)).sort((a, b) => a.order - b.order);
     }
 
     function loadLocal() {
@@ -612,7 +633,6 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return false;
         const parsed = JSON.parse(raw);
-
         if (Array.isArray(parsed)) {
           state.items = parsed.map((item, index) => ({
             id: item.id || uid(),
@@ -640,10 +660,9 @@
               }))
             : [];
         }
-
         normalizeGroupOrders();
-        normalizeItemOrders(null);
-        state.groups.forEach(g => normalizeItemOrders(g.id));
+        normalizeItemsByGroup(null);
+        state.groups.forEach(g => normalizeItemsByGroup(g.id));
         persistLocal();
         return true;
       } catch (e) {
@@ -656,7 +675,6 @@
         const res = await fetch(API_LIST_URL, { cache: "no-store" });
         if (!res.ok) throw new Error("remote load failed");
         const data = await res.json();
-
         if (Array.isArray(data.items) || Array.isArray(data.groups)) {
           state.items = Array.isArray(data.items)
             ? data.items.map((item, index) => ({
@@ -675,8 +693,8 @@
               }))
             : state.groups;
           normalizeGroupOrders();
-          normalizeItemOrders(null);
-          state.groups.forEach(g => normalizeItemOrders(g.id));
+          normalizeItemsByGroup(null);
+          state.groups.forEach(g => normalizeItemsByGroup(g.id));
           persistLocal();
           return true;
         }
@@ -686,7 +704,7 @@
 
     function queueRemoteSave() {
       clearTimeout(state.syncTimer);
-      state.syncTimer = setTimeout(syncRemote, 220);
+      state.syncTimer = setTimeout(syncRemote, 200);
     }
 
     async function syncRemote() {
@@ -702,8 +720,8 @@
 
     function saveNow() {
       normalizeGroupOrders();
-      normalizeItemOrders(null);
-      state.groups.forEach(g => normalizeItemOrders(g.id));
+      normalizeItemsByGroup(null);
+      state.groups.forEach(g => normalizeItemsByGroup(g.id));
       render();
       queueRemoteSave();
     }
@@ -712,13 +730,7 @@
       const value = text.trim();
       if (!value) return;
       const topOrder = state.items.filter(i => (i.groupId || null) === null).reduce((min, item) => Math.min(min, item.order), 0);
-      state.items.push({
-        id: uid(),
-        text: value,
-        checked: false,
-        order: topOrder - 1,
-        groupId: null,
-      });
+      state.items.push({ id: uid(), text: value, checked: false, order: topOrder - 1, groupId: null });
       saveNow();
       showToast("Item added");
     }
@@ -741,7 +753,7 @@
       state.items = state.items.map(item => item.groupId === groupId ? { ...item, groupId: null } : item);
       state.groups = state.groups.filter(g => g.id !== groupId);
       normalizeGroupOrders();
-      normalizeItemOrders(null);
+      normalizeItemsByGroup(null);
       saveNow();
       showToast("Group deleted");
     }
@@ -761,81 +773,16 @@
       showToast("Checks cleared");
     }
 
-    function moveItemToContainer(itemId, targetGroupId, targetIndex) {
-      const item = state.items.find(i => i.id === itemId);
-      if (!item) return;
-      const sourceGroupId = item.groupId || null;
-      const remaining = state.items.filter(i => i.id !== itemId);
-
-      const destItems = remaining
-        .filter(i => (i.groupId || null) === (targetGroupId || null))
-        .sort((a, b) => a.order - b.order);
-
-      const moved = { ...item, groupId: targetGroupId || null };
-      const safeIndex = Math.max(0, Math.min(targetIndex, destItems.length));
-      destItems.splice(safeIndex, 0, moved);
-      destItems.forEach((it, idx) => { it.order = idx; });
-
-      const sourceItems = remaining
-        .filter(i => (i.groupId || null) === sourceGroupId)
-        .sort((a, b) => a.order - b.order);
-      sourceItems.forEach((it, idx) => { it.order = idx; });
-
-      const otherItems = remaining.filter(i => (i.groupId || null) !== sourceGroupId && (i.groupId || null) !== (targetGroupId || null));
-      const rebuilt = [...otherItems, ...sourceItems, ...destItems].map((x, idx) => x);
-
-      // Rebuild state without duplicates
-      const map = new Map();
-      [...remaining, ...destItems].forEach(i => map.set(i.id, i));
-      state.items = Array.from(map.values());
-      normalizeItemOrders(null);
-      state.groups.forEach(g => normalizeItemOrders(g.id));
-      saveNow();
-    }
-
-    function moveItemBeforeTarget(itemId, targetItemId) {
-      const target = state.items.find(i => i.id === targetItemId);
-      if (!target) return;
-      const targetGroupId = target.groupId || null;
-      const targetItems = getOrderedItemsByGroup(targetGroupId).filter(i => i.id !== itemId);
-      const moving = state.items.find(i => i.id === itemId);
-      if (!moving) return;
-      moving.groupId = targetGroupId;
-      const targetIndex = targetItems.findIndex(i => i.id === targetItemId);
-      targetItems.splice(Math.max(0, targetIndex), 0, moving);
-      targetItems.forEach((it, idx) => { it.order = idx; });
-      state.items = state.items.map(i => i.id === moving.id ? moving : i);
-      normalizeItemOrders(null);
-      state.groups.forEach(g => normalizeItemOrders(g.id));
-      saveNow();
-    }
-
-    function moveItemAfterTarget(itemId, targetItemId) {
-      const target = state.items.find(i => i.id === targetItemId);
-      if (!target) return;
-      const targetGroupId = target.groupId || null;
-      const targetItems = getOrderedItemsByGroup(targetGroupId).filter(i => i.id !== itemId);
-      const moving = state.items.find(i => i.id === itemId);
-      if (!moving) return;
-      moving.groupId = targetGroupId;
-      const targetIndex = targetItems.findIndex(i => i.id === targetItemId);
-      targetItems.splice(Math.max(0, targetIndex + 1), 0, moving);
-      targetItems.forEach((it, idx) => { it.order = idx; });
-      state.items = state.items.map(i => i.id === moving.id ? moving : i);
-      normalizeItemOrders(null);
-      state.groups.forEach(g => normalizeItemOrders(g.id));
-      saveNow();
-    }
-
     function moveItemToGroupTop(itemId, groupId) {
       const moving = state.items.find(i => i.id === itemId);
       if (!moving) return;
       moving.groupId = groupId;
-      const targetItems = getOrderedItemsByGroup(groupId).filter(i => i.id !== itemId);
-      targetItems.unshift(moving);
-      targetItems.forEach((it, idx) => { it.order = idx; });
-      normalizeItemOrders(null);
-      state.groups.forEach(g => normalizeItemOrders(g.id));
+      const bucket = getItemsByGroup(groupId).filter(i => i.id !== itemId);
+      bucket.unshift(moving);
+      bucket.forEach((i, idx) => i.order = idx);
+      state.items = state.items.map(i => i.id === moving.id ? moving : i);
+      normalizeItemsByGroup(null);
+      state.groups.forEach(g => normalizeItemsByGroup(g.id));
       saveNow();
     }
 
@@ -843,11 +790,42 @@
       const moving = state.items.find(i => i.id === itemId);
       if (!moving) return;
       moving.groupId = null;
-      const targetItems = getOrderedItemsByGroup(null).filter(i => i.id !== itemId);
-      targetItems.unshift(moving);
-      targetItems.forEach((it, idx) => { it.order = idx; });
-      normalizeItemOrders(null);
-      state.groups.forEach(g => normalizeItemOrders(g.id));
+      const bucket = getItemsByGroup(null).filter(i => i.id !== itemId);
+      bucket.unshift(moving);
+      bucket.forEach((i, idx) => i.order = idx);
+      state.items = state.items.map(i => i.id === moving.id ? moving : i);
+      normalizeItemsByGroup(null);
+      state.groups.forEach(g => normalizeItemsByGroup(g.id));
+      saveNow();
+    }
+
+    function moveItemBeforeTarget(itemId, targetItemId) {
+      const moving = state.items.find(i => i.id === itemId);
+      const target = state.items.find(i => i.id === targetItemId);
+      if (!moving || !target || moving.id === target.id) return;
+      moving.groupId = target.groupId || null;
+      const bucket = getItemsByGroup(target.groupId || null).filter(i => i.id !== itemId);
+      const idx = bucket.findIndex(i => i.id === targetItemId);
+      bucket.splice(Math.max(0, idx), 0, moving);
+      bucket.forEach((i, n) => i.order = n);
+      state.items = state.items.map(i => i.id === moving.id ? moving : i);
+      normalizeItemsByGroup(null);
+      state.groups.forEach(g => normalizeItemsByGroup(g.id));
+      saveNow();
+    }
+
+    function moveItemAfterTarget(itemId, targetItemId) {
+      const moving = state.items.find(i => i.id === itemId);
+      const target = state.items.find(i => i.id === targetItemId);
+      if (!moving || !target || moving.id === target.id) return;
+      moving.groupId = target.groupId || null;
+      const bucket = getItemsByGroup(target.groupId || null).filter(i => i.id !== itemId);
+      const idx = bucket.findIndex(i => i.id === targetItemId);
+      bucket.splice(Math.max(0, idx + 1), 0, moving);
+      bucket.forEach((i, n) => i.order = n);
+      state.items = state.items.map(i => i.id === moving.id ? moving : i);
+      normalizeItemsByGroup(null);
+      state.groups.forEach(g => normalizeItemsByGroup(g.id));
       saveNow();
     }
 
@@ -855,15 +833,9 @@
       const el = document.elementFromPoint(x, y);
       if (!el) return null;
       const item = el.closest?.('.item[data-item-id]');
-      if (item) {
-        return { type: 'item', id: item.dataset.itemId, el: item };
-      }
+      if (item) return { type: 'item', id: item.dataset.itemId, el: item };
       const zone = el.closest?.('.drop-zone[data-group-id]');
-      if (zone) {
-        return { type: 'groupZone', groupId: zone.dataset.groupId || null, el: zone };
-      }
-      const shell = el.closest?.('.ungrouped-shell');
-      if (shell) return { type: 'ungrouped', groupId: null, el: shell };
+      if (zone) return { type: 'zone', groupId: zone.dataset.groupId || null, el: zone };
       return null;
     }
 
@@ -881,44 +853,33 @@
       return li;
     }
 
-    function renderSectionForItems(title, items, opts = {}) {
+    function buildListSection(title, items, groupId = null, showGroupDelete = false) {
       const shell = document.createElement("div");
-      shell.className = opts.groupId ? "group-shell" : "ungrouped-shell";
-
-      if (opts.title) {
-        const head = document.createElement("div");
-        head.className = "section-head";
-        head.innerHTML = `
-          <h2 class="section-title">${escapeHtml(opts.title)}</h2>
-          <div class="group-actions">${opts.controlsHtml || ""}</div>
-        `;
-        shell.appendChild(head);
+      shell.className = "shell";
+      const head = document.createElement("div");
+      head.className = "section-head";
+      head.innerHTML = `
+        <h2 class="section-title">${escapeHtml(title)}</h2>
+        <div class="group-actions"></div>
+      `;
+      if (showGroupDelete && groupId) {
+        const btn = document.createElement("button");
+        btn.className = "small-btn";
+        btn.type = "button";
+        btn.textContent = "Delete";
+        btn.dataset.action = "delete-group";
+        btn.dataset.groupId = groupId;
+        head.querySelector(".group-actions").appendChild(btn);
       }
+      shell.appendChild(head);
 
       const zone = document.createElement("div");
       zone.className = "drop-zone";
-      zone.dataset.groupId = opts.groupId || "";
-
+      zone.dataset.groupId = groupId || "";
       const list = document.createElement("ul");
       list.className = "list";
-      list.dataset.sectionGroupId = opts.groupId || "";
       items.forEach(item => list.appendChild(renderItem(item)));
       zone.appendChild(list);
-
-      if (state.groupDone) {
-        const done = items.filter(i => i.checked);
-        if (done.length) {
-          const doneTitle = document.createElement("div");
-          doneTitle.className = "done-title";
-          doneTitle.textContent = "Done";
-          zone.appendChild(doneTitle);
-          const doneList = document.createElement("ul");
-          doneList.className = "list";
-          done.forEach(item => doneList.appendChild(renderItem(item)));
-          zone.appendChild(doneList);
-        }
-      }
-
       shell.appendChild(zone);
       return shell;
     }
@@ -926,118 +887,87 @@
     function render() {
       const scrollY = window.scrollY;
       const root = document.createDocumentFragment();
-      const groups = getOrderedGroups();
-      const ungrouped = getOrderedItemsByGroup(null);
-      const ungroupedVisible = state.groupDone ? ungrouped.filter(i => !i.checked) : ungrouped;
-
-      // Ungrouped first
-      const ungroupedShell = document.createElement("div");
-      ungroupedShell.className = "ungrouped-shell";
-      const ungroupedHead = document.createElement("div");
-      ungroupedHead.className = "section-head";
-      ungroupedHead.innerHTML = `
-        <h2 class="section-title">List</h2>
-        <div class="group-actions"></div>
-      `;
-      ungroupedShell.appendChild(ungroupedHead);
-
-      const ungroupedZone = document.createElement("div");
-      ungroupedZone.className = "drop-zone";
-      ungroupedZone.dataset.groupId = "";
-      const ungroupedList = document.createElement("ul");
-      ungroupedList.className = "list";
-      ungroupedVisible.forEach(item => ungroupedList.appendChild(renderItem(item)));
-      ungroupedZone.appendChild(ungroupedList);
 
       if (state.groupDone) {
-        const doneUngrouped = ungrouped.filter(i => i.checked);
-        if (doneUngrouped.length) {
-          const doneTitle = document.createElement("div");
-          doneTitle.className = "done-title";
-          doneTitle.textContent = "Done";
-          ungroupedZone.appendChild(doneTitle);
-          const doneList = document.createElement("ul");
-          doneList.className = "list";
-          doneUngrouped.forEach(item => doneList.appendChild(renderItem(item)));
-          ungroupedZone.appendChild(doneList);
+        const ordered = [...state.items].sort((a, b) => a.order - b.order);
+        const active = ordered.filter(i => !i.checked);
+        const done = ordered.filter(i => i.checked);
+        root.appendChild(buildListSection("List", active, null, false));
+        if (done.length) {
+          const doneShell = document.createElement("div");
+          doneShell.className = "shell";
+          const doneHead = document.createElement("div");
+          doneHead.className = "section-head";
+          doneHead.innerHTML = `<h2 class="section-title">Done</h2><div class="group-actions"></div>`;
+          doneShell.appendChild(doneHead);
+          const zone = document.createElement("div");
+          zone.className = "drop-zone";
+          zone.dataset.groupId = "done-section";
+          const list = document.createElement("ul");
+          list.className = "list";
+          done.forEach(item => list.appendChild(renderItem(item)));
+          zone.appendChild(list);
+          doneShell.appendChild(zone);
+          root.appendChild(doneShell);
         }
+      } else {
+        const ungrouped = getItemsByGroup(null);
+        root.appendChild(buildListSection("List", ungrouped, null, false));
+        getOrderedGroups().forEach(group => {
+          const items = getItemsByGroup(group.id);
+          root.appendChild(buildListSection(group.name, items, group.id, true));
+        });
       }
-
-      ungroupedShell.appendChild(ungroupedZone);
-      root.appendChild(ungroupedShell);
-
-      // Groups
-      groups.forEach(group => {
-        const items = getOrderedItemsByGroup(group.id);
-        const visible = state.groupDone ? items.filter(i => !i.checked) : items;
-        const shell = document.createElement("div");
-        shell.className = "group-shell";
-        shell.dataset.groupId = group.id;
-
-        const head = document.createElement("div");
-        head.className = "section-head";
-        head.innerHTML = `
-          <h2 class="section-title">${escapeHtml(group.name)}</h2>
-          <div class="group-actions">
-            <button class="small-btn" data-action="delete-group" data-group-id="${group.id}">Delete</button>
-          </div>
-        `;
-        shell.appendChild(head);
-
-        const zone = document.createElement("div");
-        zone.className = "drop-zone";
-        zone.dataset.groupId = group.id;
-        const list = document.createElement("ul");
-        list.className = "list";
-        visible.forEach(item => list.appendChild(renderItem(item)));
-        zone.appendChild(list);
-
-        if (state.groupDone) {
-          const done = items.filter(i => i.checked);
-          if (done.length) {
-            const doneTitle = document.createElement("div");
-            doneTitle.className = "done-title";
-            doneTitle.textContent = "Done";
-            zone.appendChild(doneTitle);
-            const doneList = document.createElement("ul");
-            doneList.className = "list";
-            done.forEach(item => doneList.appendChild(renderItem(item)));
-            zone.appendChild(doneList);
-          }
-        }
-
-        shell.appendChild(zone);
-        root.appendChild(shell);
-      });
 
       contentRoot.replaceChildren(root);
       requestAnimationFrame(() => window.scrollTo({ top: scrollY, left: 0, behavior: "auto" }));
     }
 
-    function handleItemDrop(sourceId, clientX, clientY) {
-      const target = findDropContext(clientX, clientY);
+    function handleItemDrop(sourceId, x, y) {
+      if (state.groupDone) {
+        const target = findDropContext(x, y);
+        const moving = state.items.find(i => i.id === sourceId);
+        if (!moving) return;
+        if (!target) return;
+        if (target.type === 'item') {
+          const targetItem = state.items.find(i => i.id === target.id);
+          if (!targetItem) return;
+          const rect = target.el.getBoundingClientRect();
+          const before = y < rect.top + rect.height / 2;
+          moving.checked = targetItem.checked;
+          if (moving.checked) {
+            if (before) moveItemBeforeTarget(sourceId, target.id);
+            else moveItemAfterTarget(sourceId, target.id);
+          } else {
+            if (before) moveItemBeforeTarget(sourceId, target.id);
+            else moveItemAfterTarget(sourceId, target.id);
+          }
+          return;
+        }
+        if (target.type === 'zone') {
+          const isDone = target.groupId === 'done-section';
+          moving.checked = isDone;
+          saveNow();
+          return;
+        }
+        return;
+      }
+
+      const target = findDropContext(x, y);
       if (!target) {
         moveItemToUngroupedTop(sourceId);
         return;
       }
-
       if (target.type === 'item') {
-        const targetEl = target.el;
-        const rect = targetEl.getBoundingClientRect();
-        const before = clientY < rect.top + rect.height / 2;
+        const rect = target.el.getBoundingClientRect();
+        const before = y < rect.top + rect.height / 2;
         if (target.id === sourceId) return;
         if (before) moveItemBeforeTarget(sourceId, target.id);
         else moveItemAfterTarget(sourceId, target.id);
         return;
       }
-
-      if (target.type === 'groupZone') {
+      if (target.type === 'zone') {
         moveItemToGroupTop(sourceId, target.groupId || null);
-        return;
-      }
-
-      if (target.type === 'ungrouped') {
-        moveItemToUngroupedTop(sourceId);
       }
     }
 
@@ -1051,8 +981,7 @@
     document.addEventListener("click", (e) => {
       const action = e.target.closest("[data-action]");
       if (!action) return;
-      const kind = action.dataset.action;
-      if (kind === "delete-group") {
+      if (action.dataset.action === "delete-group") {
         deleteGroup(action.dataset.groupId);
       }
     });
@@ -1060,16 +989,11 @@
     document.addEventListener("pointerdown", (e) => {
       const handle = e.target.closest('.drag-handle[data-action="drag"]');
       if (!handle) return;
-      const itemId = handle.dataset.id;
-      const item = state.items.find(i => i.id === itemId);
-      if (!item) return;
       const itemEl = handle.closest('.item');
       if (!itemEl) return;
       state.drag = {
-        id: itemId,
+        id: handle.dataset.id,
         pointerId: e.pointerId,
-        startX: e.clientX,
-        startY: e.clientY,
         currentX: e.clientX,
         currentY: e.clientY,
         el: itemEl,
@@ -1085,17 +1009,20 @@
       state.drag.currentY = e.clientY;
     });
 
-    function endDrag(e) {
+    document.addEventListener("pointerup", (e) => {
       if (!state.drag || e.pointerId !== state.drag.pointerId) return;
-      const { id, el, currentX, currentY } = state.drag;
+      const { id, currentX, currentY, el } = state.drag;
       el.classList.remove("dragging");
       handleItemDrop(id, currentX, currentY);
       state.drag = null;
       clearDropHighlights();
-    }
-
-    document.addEventListener("pointerup", endDrag);
-    document.addEventListener("pointercancel", endDrag);
+    });
+    document.addEventListener("pointercancel", (e) => {
+      if (!state.drag || e.pointerId !== state.drag.pointerId) return;
+      state.drag.el.classList.remove("dragging");
+      state.drag = null;
+      clearDropHighlights();
+    });
 
     function clearDropHighlights() {
       document.querySelectorAll(".drop-active").forEach(el => el.classList.remove("drop-active"));
@@ -1105,8 +1032,69 @@
       if (!state.drag) return;
       clearDropHighlights();
       const target = findDropContext(e.clientX, e.clientY);
-      if (target && target.el) target.el.classList.add("drop-active");
+      if (target?.el) target.el.classList.add("drop-active");
     });
+
+    // Swipe delete for list items
+    document.addEventListener("pointerdown", (e) => {
+      const item = e.target.closest(".item[data-item-id]");
+      if (!item) return;
+      if (e.target.closest(".drag-handle") || e.target.closest(".check")) return;
+      state.swipe = {
+        el: item,
+        id: item.dataset.itemId,
+        pointerId: e.pointerId,
+        startX: e.clientX,
+        startY: e.clientY,
+        currentX: e.clientX,
+        currentY: e.clientY,
+        active: true,
+        swiping: false,
+      };
+      item.classList.add("swiping");
+      try { item.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+
+    document.addEventListener("pointermove", (e) => {
+      if (!state.swipe || !state.swipe.active || e.pointerId !== state.swipe.pointerId) return;
+      state.swipe.currentX = e.clientX;
+      state.swipe.currentY = e.clientY;
+      const dx = state.swipe.currentX - state.swipe.startX;
+      const dy = state.swipe.currentY - state.swipe.startY;
+      if (!state.swipe.swiping) {
+        if (Math.abs(dx) > 16 && Math.abs(dx) > Math.abs(dy)) state.swipe.swiping = true;
+        else return;
+      }
+      e.preventDefault();
+      state.swipe.el.style.transform = `translateX(${dx}px)`;
+      state.swipe.el.style.opacity = String(Math.max(0.35, 1 - Math.abs(dx) / 240));
+    });
+
+    function finishSwipe(e) {
+      if (!state.swipe || e.pointerId !== state.swipe.pointerId) return;
+      const swipe = state.swipe;
+      swipe.el.classList.remove("swiping");
+      const dx = swipe.currentX - swipe.startX;
+      if (swipe.swiping && Math.abs(dx) > 90) {
+        swipe.el.classList.add("deleting");
+        const id = swipe.id;
+        state.swipe = null;
+        setTimeout(() => {
+          state.items = state.items.filter(i => i.id !== id);
+          normalizeItemsByGroup(null);
+          state.groups.forEach(g => normalizeItemsByGroup(g.id));
+          saveNow();
+          showToast("Item removed");
+        }, 110);
+        return;
+      }
+      swipe.el.style.transform = "";
+      swipe.el.style.opacity = "";
+      state.swipe = null;
+    }
+
+    document.addEventListener("pointerup", finishSwipe);
+    document.addEventListener("pointercancel", finishSwipe);
 
     addBtn.addEventListener("click", () => {
       addItem(inputEl.value);
@@ -1132,6 +1120,21 @@
     sizeSlider.addEventListener("input", () => {
       setTileSize(Number(sizeSlider.value));
     });
+
+    // Hide top panel while scrolling down, show while scrolling up
+    let lastScrollY = window.scrollY;
+    let scrollTick = false;
+    window.addEventListener("scroll", () => {
+      if (scrollTick) return;
+      scrollTick = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (y > 70 && y > lastScrollY + 6) panelWrap.classList.add("hidden");
+        if (y < lastScrollY - 6 || y < 20) panelWrap.classList.remove("hidden");
+        lastScrollY = y;
+        scrollTick = false;
+      });
+    }, { passive: true });
 
     async function init() {
       const localLoaded = loadLocal();
