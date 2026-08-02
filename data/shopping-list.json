@@ -4,7 +4,7 @@
       "id": "ea00970e-425f-4053-bbbe-eb6a1df0c130",
       "text": "Tea",
       "checked": false,
-      "order": 1,
+      "order": 0,
       "groupId": null
     },
     {
@@ -312,7 +312,7 @@
       "id": "6d99d1cc-8a91-41ff-b9cd-b667436eec7d",
       "text": "Oil",
       "checked": false,
-      "order": 0,
+      "order": 1,
       "groupId": null
     }
   ]
